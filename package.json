@@ -6,7 +6,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "create_db": "node database/createDB.js",
+    "create_table": "node database/createTable.js",
+    "data_loader": "node database/dataLoader.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +24,7 @@
   "homepage": "https://github.com/clauCampos/newsApp#readme",
   "dependencies": {
     "dotenv": "^16.0.1",
+    "express": "^4.18.1",
     "mysql2": "^2.3.3",
     "nodemon": "^2.0.16"
   }

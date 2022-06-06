@@ -1,0 +1,27 @@
+{
+  "name": "newsApp",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "API that allows managing collaborative news.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clauCampos/newsApp.git"
+  },
+  "keywords": [],
+  "author": "Claudia Campos & Yasmin Lorenzo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/clauCampos/newsApp/issues"
+  },
+  "homepage": "https://github.com/clauCampos/newsApp#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.16"
+  }
+}

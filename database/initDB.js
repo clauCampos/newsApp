@@ -1,45 +1,41 @@
-require("dotenv").config();
-const getPool = require("./getPool");
+import 'dotenv/config'
+import {getPool} from "./getPool.js";
+
+const pool = getPool();
 
 const initDB = async () => {
     try {
-        const pool = getPool();
+        await pool.query("DROP TABLE IF EXISTS posts");
+        await pool.query("DROP TABLE IF EXISTS users");
 
-        console.log("Deleting table...");
-
-        await pool.query("DROP TABLE IF EXISTS users;");
-        await pool.query("DROP TABLE IF EXISTS entries;");
-
-        console.log("Creating users table...");
-
+        /*console.log("Creating users table...");
         await pool.query(`
             CREATE TABLE users (
                 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                avatar VARCHAR(200),
-                name VARCHAR(100) NOT NULL,
+                nick_name VARCHAR(100) UNIQUE NOT NULL,
                 bio VARCHAR(200),
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
-                role ENUM("user", "admin") DEFAULT "user",
-                registrationCode VARCHAR(100)
+                registration_code VARCHAR(100),
+                avatar VARCHAR(200)
             );
-        `);
-
-        console.log("Creating entries table...");
+        `);*/
+        console.log("Creating posts table...");
 
         await pool.query(`
-            CREATE TABLE entries (
+            CREATE TABLE posts (
                 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                topic VARCHAR(100) NOT NULL,
-                photo VARCHAR(200),
                 title VARCHAR(100) NOT NULL,
+                opening_line VARCHAR(200) NOT NULL,
                 text VARCHAR(500) NOT NULL,
-                user_id INT UNSIGNED,
-                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+                topic ENUM('politics', 'finances','sports'), 
+                photo VARCHAR(200)   
             );
         `);
-
-        console.log("¡All done!");
+        //user_id INT UNSIGNED,
+        //FOREIGN KEY (user_id) REFERENCES users (id)
+        //new table votes
+        console.log("¡Table has been created!");
     } catch (error) {
         console.error(error);
     } finally {

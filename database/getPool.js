@@ -1,4 +1,4 @@
-const mysql = require("mysql2/promise");
+import mysql from 'mysql2/promise'
 
 const {
     DATABASE_HOST,
@@ -10,7 +10,7 @@ const {
 
 let pool;
 
-const getPool = () => {
+export const getPool = () => {
     if (!pool) {
         pool = mysql.createPool({
             host: DATABASE_HOST,
@@ -26,4 +26,3 @@ const getPool = () => {
     return pool;
 };
 
-module.exports = getPool;

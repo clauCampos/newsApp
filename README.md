@@ -31,26 +31,22 @@ Registered users can also edit and delete news published by the user, vote posit
 ### Clone the repository:
 git clone git@github.com:clauCampos/newsApp.git
 
-### Fill the info in the .env file:
-- server_port
-- database_host
-- database_port
-- database_user
-- database_password
-- database_name
+### Fill the info in the .env file following  .env.example file's structure
 
 ### Install NPM:
 npm install
 
+### Create database: 
+npm run create_db
+
 ### Create the tables:
-npm run initDB
+npm run init_table
 
 ### Insert data in tables:
-npm run populateDB
+npm run data_loader
 
 ### Run the project!
 npm run dev
-
 
 ## Data Bases:
 

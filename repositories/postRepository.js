@@ -20,5 +20,9 @@ const findPostByTopic = async (topic) => {
     const [posts] = await pool.query(`SELECT * FROM posts WHERE topic= "${topic}"`)
     return posts;
 }
+const deletePostById = async (postId)=>{
+    const [{affectedRows}]=await pool.query(`DELETE FROM posts WHERE id =?`, [postId]);
+    return affectedRows;
 
-export {getPosts, findPostByTopic, createPost}
+}
+export {getPosts, findPostByTopic, createPost,deletePostById}

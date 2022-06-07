@@ -1,4 +1,4 @@
-import {createPost, findPostByTopic, getPosts} from "../repositories/postRepository.js";
+import {createPost, deletePostById, findPostByTopic, getPosts} from "../repositories/postRepository.js";
 
 const addPost = async (request, response, next) => {
     try {
@@ -38,7 +38,24 @@ const getPostsByTopic = async (request, response, next) => {
     } catch (error) {
         console.error(error)
     }
-
 }
 
-export {addPost,getAllPosts, getPostsByTopic}
+const deletePost = async (request, response, next) => {
+
+    try {
+        const {idPost} = request.params;
+        const rowToDelete = await deletePostById(idPost);
+
+        if (rowToDelete === 0) {
+            response.status(400).send({status: "error", message: `id post= ${idPost} doesn't exist`})
+        } else {
+            response.status(200).send({status: "ok", message: "deleted user"})
+        }
+
+    } catch (error) {
+        console.error(error)
+        next(error);
+    }
+}
+
+export {addPost, getAllPosts, getPostsByTopic, deletePost}

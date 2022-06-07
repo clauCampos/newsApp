@@ -8,8 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "create_db": "node database/createDB.js",
-    "create_table": "node database/createTable.js",
-    "data_loader": "node database/dataLoader.js"
+    "init_table": "node database/initDB.js",
+    "data_loader": "node database/populateDB.js"
   },
   "repository": {
     "type": "git",

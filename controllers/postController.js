@@ -1,4 +1,16 @@
-import {findPostByTopic, getPosts} from "../repositories/postRepository.js";
+import {createPost, findPostByTopic, getPosts} from "../repositories/postRepository.js";
+
+const addPost = async (request, response, next) => {
+    try {
+        const {title, opening_line, text, topic, photo} = request.body;
+        const insertedId = await createPost(title, opening_line, text, topic, photo);
+
+        response.status(200).send({status: "ok", message: `new post created with id: ${insertedId}`})
+
+    } catch (error) {
+        next(error)
+    }
+}
 
 const getAllPosts = async (request, response, next) => {
     try {
@@ -29,4 +41,4 @@ const getPostsByTopic = async (request, response, next) => {
 
 }
 
-export {getAllPosts, getPostsByTopic}
+export {addPost,getAllPosts, getPostsByTopic}

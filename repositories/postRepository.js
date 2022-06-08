@@ -16,6 +16,12 @@ const getPosts = async () => {
     return posts;
 }
 
+const collectLatestPosts = async () => {
+    const [[posts]] = await pool.query (`SELECT * FROM posts WHERE actual_date > now() - interval 24 hour`)
+    console.log(posts)
+    return posts;
+}
+
 const findPostByTopic = async (topic) => {
     const [posts] = await pool.query(`SELECT * FROM posts WHERE topic= "${topic}"`)
     return posts;
@@ -25,4 +31,4 @@ const deletePostById = async (postId)=>{
     return affectedRows;
 
 }
-export {getPosts, findPostByTopic, createPost,deletePostById}
+export {getPosts, findPostByTopic, createPost,deletePostById, collectLatestPosts}

@@ -2,9 +2,11 @@ import {createPost, deletePostById, findPostByTopic, getPosts} from "../reposito
 
 const addPost = async (request, response, next) => {
     try {
-        const {title, opening_line, text, topic, photo} = request.body;
-        const insertedId = await createPost(title, opening_line, text, topic, photo);
 
+        const actualDate = new Date(Date.now());
+        const {title, opening_line, text, topic, photo} = request.body;
+
+        const insertedId = await createPost(title, opening_line, text, topic, photo, actualDate);
         response.status(200).send({status: "ok", message: `new post created with id: ${insertedId}`})
 
     } catch (error) {

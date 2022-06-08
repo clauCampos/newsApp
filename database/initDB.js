@@ -29,7 +29,8 @@ const initDB = async () => {
                 opening_line VARCHAR(200) NOT NULL,
                 text VARCHAR(500) NOT NULL,
                 topic ENUM('politics', 'finances','sports'), 
-                photo VARCHAR(200)   
+                photo VARCHAR(200),
+                actual_date timestamp NOT NULL   
             );
         `);
         //user_id INT UNSIGNED,

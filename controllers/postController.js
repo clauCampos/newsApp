@@ -1,4 +1,11 @@
-import {createPost, deletePostById, findPostByTopic, getPosts, collectLatestPosts} from "../repositories/postRepository.js";
+import {
+    createPost,
+    deletePostById,
+    findPostByTopic,
+    getPosts,
+    collectLatestPosts, findPostByDate
+} from "../repositories/postRepository.js";
+
 
 const addPost = async (request, response, next) => {
     try {
@@ -16,7 +23,7 @@ const addPost = async (request, response, next) => {
 
 const getLatestPosts = async (request, response, next) => {
     try {
-        const posts= await collectLatestPosts();
+        const posts = await collectLatestPosts();
         if (typeof posts == "undefined" && posts == null) {
             response.status(404).send({status: "error", message: "No posts exists"})
         } else {
@@ -55,6 +62,21 @@ const getPostsByTopic = async (request, response, next) => {
         console.error(error)
     }
 }
+const getPostsByDate = async (request, response, next) => {
+    try {
+        const {date} = request.params;
+
+        const posts = await findPostByDate(date);
+
+        if (posts.length === 0) {
+            response.status(404).send({status: "error", message: "No posts of that topic"})
+        } else {
+            response.status(200).send({status: "ok", data: posts})
+        }
+    } catch (error) {
+        next(error)
+    }
+}
 
 const deletePost = async (request, response, next) => {
 
@@ -74,4 +96,4 @@ const deletePost = async (request, response, next) => {
     }
 }
 
-export {addPost, getAllPosts, getPostsByTopic, deletePost, getLatestPosts}
+export {addPost, getAllPosts, getPostsByTopic, deletePost, getLatestPosts, getPostsByDate}

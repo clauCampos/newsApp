@@ -24,7 +24,7 @@ const addPost = async (request, response, next) => {
 const getLatestPosts = async (request, response, next) => {
     try {
         const posts = await collectLatestPosts();
-        if (typeof posts == "undefined" && posts == null) {
+        if (posts.length === 0)  {
             response.status(404).send({status: "error", message: "No posts exists"})
         } else {
             response.status(200).send({status: "ok", data: posts})
@@ -44,7 +44,7 @@ const getAllPosts = async (request, response, next) => {
             response.status(200).send({status: "ok", data: posts})
         }
     } catch (error) {
-        console.error(error)
+        next(error)
     }
 
 }
@@ -59,7 +59,7 @@ const getPostsByTopic = async (request, response, next) => {
             response.status(200).send({status: "ok", data: posts})
         }
     } catch (error) {
-        console.error(error)
+        next(error)
     }
 }
 const getPostsByDate = async (request, response, next) => {
@@ -91,7 +91,6 @@ const deletePost = async (request, response, next) => {
         }
 
     } catch (error) {
-        console.error(error)
         next(error);
     }
 }

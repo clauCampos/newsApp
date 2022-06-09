@@ -1,4 +1,4 @@
-## 📝 PROYECTO NOTICIAS 
+## 📝 PROJECT NOTICIAS 
 
 ### Description: 
 
@@ -6,8 +6,6 @@ API that allows managing collaborative news.
 
 Users can view a list with the latest news of the day ordered by rating, view news from previous days, filter news by fixed thematic categories and register as a user.
 Registered users can also edit and delete news published by the user, vote positively or negatively on other news and manage their user profile.
-
-
 
 ### Back-end Tech Stacks:
 - **NPM**
@@ -33,20 +31,35 @@ git clone git@github.com:clauCampos/newsApp.git
 
 ### Fill the info in the .env file following  .env.example file's structure
 
-### Install NPM:
+### Install dependencies:
+
+```
 npm install
+```
+
 
 ### Create database: 
-npm run create_db
 
+```
+npm run create_db
+```
 ### Create the tables:
+
+```
 npm run init_table
+```
 
 ### Insert data in tables:
+
+```
 npm run data_loader
+```
 
 ### Run the project!
+
+```
 npm run dev
+```
 
 ## Data Bases:
 

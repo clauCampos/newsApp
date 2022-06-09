@@ -69,7 +69,7 @@ const getPostsByDate = async (request, response, next) => {
         const posts = await findPostByDate(date);
 
         if (posts.length === 0) {
-            response.status(404).send({status: "error", message: "No posts of that topic"})
+            response.status(404).send({status: "error", message: "No posts of that date"})
         } else {
             response.status(200).send({status: "ok", data: posts})
         }

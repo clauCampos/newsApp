@@ -2,10 +2,10 @@ import {getPool} from "../database/getPool.js";
 
 const pool = getPool();
 
-const createPost = async (titleText, openingLine, textValue, chosenTopic, photo, actualDate) => {
+const createPost = async (titleText, openingLine, textValue, chosenTopic, photo, actualDate, userID) => {
     const [{insertId,affectedRows}]= await pool.query(`INSERT INTO posts 
-            (title, opening_line, text, topic, photo, actual_date) 
-            VALUES (?,?,?,?,?,?)`, [titleText, openingLine, textValue, chosenTopic, photo, actualDate]);
+            (title, opening_line, text, topic, photo, actual_date, user_id) 
+            VALUES (?,?,?,?,?,?,?)`, [titleText, openingLine, textValue, chosenTopic, photo, actualDate, userID]);
 
     console.log(`insert id:${insertId}, affected rows:${affectedRows}`)
     return insertId;

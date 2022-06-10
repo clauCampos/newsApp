@@ -14,6 +14,7 @@ const initDB = async () => {
                 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 nick_name VARCHAR(100) UNIQUE NOT NULL,
                 email VARCHAR(100) UNIQUE NOT NULL,
+                password VARCHAR(100) NOT NULL,
                 bio VARCHAR(200),
                 avatar VARCHAR(200)               
             );

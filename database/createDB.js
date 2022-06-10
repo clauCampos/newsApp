@@ -1,23 +1,20 @@
 import 'dotenv/config'
-import mysql from 'mysql2/promise'
+import {getPool} from "./getPool.js";
 
 const {
-    DATABASE_HOST,
-    DATABASE_USER,
-    DATABASE_PASSWORD,
     DATABASE_NAME
 } = process.env
 
+const pool = getPool();
 const createDB = async () => {
-    const pool = mysql.createPool({
-        host: DATABASE_HOST,
-        user: DATABASE_USER,
-        password: DATABASE_PASSWORD,
-        connectionLimit: 10
-    });
-
-    await pool.query(`DROP DATABASE IF EXISTS ${DATABASE_NAME}`)
-    await pool.query(`CREATE DATABASE ${DATABASE_NAME}`);
-};
+        try {
+            await pool.query(`DROP DATABASE IF EXISTS ${DATABASE_NAME}`)
+            await pool.query(`CREATE DATABASE ${DATABASE_NAME}`);
+        }catch (error){
+            console.log(error);
+        } finally {
+            process.exit()
+        }
+    };
 createDB();
 

@@ -1,5 +1,5 @@
 import {findUserByEmail, findUserByNickName, insertUser} from "../repositories/userRepository.js";
-import {hash} from "bcrypt";
+import bcrypt, {hash} from "bcrypt";
 
 const addUser = async (request, response, next) => {
     try {
@@ -25,5 +25,24 @@ const addUser = async (request, response, next) => {
     }
 }
 
+const loginUser = async (request, response, next) => {
 
-export {addUser}
+    try {
+        const {email, password} = request.body
+        const user = await findUserByEmail(email)
+        const encryptedPassword = user[0].password
+
+        const isLoginValid = await bcrypt.compare(password, encryptedPassword)
+
+        if (!isLoginValid) {
+            response.status(400).send({status: "error", message: `Incorrect login`})
+        }
+        response.status(200).send({status: "ok", message: `Correct login`})
+
+    } catch (error) {
+        next(error)
+    }
+}
+
+
+export {addUser, loginUser}

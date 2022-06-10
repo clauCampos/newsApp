@@ -1,12 +1,14 @@
 import 'dotenv/config'
 import express from 'express'
 import {router} from "./routes/routes.js";
+import {userRouter} from "./routes/routesUsers.js";
 
 const { SERVER_PORT } = process.env;
 const app = express();
 
 app.use(express.json());
 app.use('/api/v1', router)
+app.use('/api/v1/user', userRouter)
 /*const {
     registerUser,
     activateUser,

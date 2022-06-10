@@ -19,7 +19,6 @@ const initDB = async () => {
                 avatar VARCHAR(200)               
             );
         `);
-        //password VARCHAR(100) NOT NULL,
         //registration_code VARCHAR(100),
 
         console.log("Creating posts table...");
@@ -32,14 +31,13 @@ const initDB = async () => {
                 text VARCHAR(500) NOT NULL,
                 topic ENUM('politics', 'finances','sports'), 
                 photo VARCHAR(200),
-                actual_date timestamp NOT NULL            
+                actual_date timestamp NOT NULL,            
+                user_id INT UNSIGNED NOT NULL, 
+                FOREIGN KEY (user_id) REFERENCES users (id)
             );
         `);
-        //user_id INT UNSIGNED NOT NULL,
-        //    FOREIGN KEY (user_id) REFERENCES users (id)
 
-        //new table votes
-        console.log("¡Table has been created!");
+        console.log("¡Users and posts tables has been created!");
     } catch (error) {
         console.error(error);
     } finally {

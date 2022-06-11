@@ -1,5 +1,6 @@
 import {findUserByEmail, findUserByNickName, insertUser} from "../repositories/userRepository.js";
 import bcrypt, {hash} from "bcrypt";
+import jsonwebtoken from 'jsonwebtoken'
 
 const addUser = async (request, response, next) => {
     try {
@@ -29,15 +30,29 @@ const loginUser = async (request, response, next) => {
 
     try {
         const {email, password} = request.body
-        const user = await findUserByEmail(email)
-        const encryptedPassword = user[0].password
 
+        const user = await findUserByEmail(email)
+
+        if (user.length === 0) {
+            response.status(400).send({status: "error", message: `Wrong email or password`})
+        }
+
+        const encryptedPassword = user[0]?.password
         const isLoginValid = await bcrypt.compare(password, encryptedPassword)
 
         if (!isLoginValid) {
-            response.status(400).send({status: "error", message: `Incorrect login`})
+            response.status(400).send({status: "error", message: `Wrong email or password`})
         }
-        response.status(200).send({status: "ok", message: `Correct login`})
+
+        const tokenPayload = {
+            id: user[0].id,
+        };
+        console.log("tokenpayload" + {tokenPayload})
+        const token = jsonwebtoken.sign(tokenPayload, process.env.JWT_SECRET, {
+            expiresIn: "7d",
+        });
+
+        response.status(200).send({status: "ok", message: `Correct login, token: ${token}`})
 
     } catch (error) {
         next(error)

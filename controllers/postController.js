@@ -3,7 +3,7 @@ import {
     deletePostById,
     findPostByTopic,
     getPosts,
-    collectLatestPosts, findPostByDate
+    collectLatestPosts, findPostByDate, findPostById
 } from "../repositories/postRepository.js";
 
 
@@ -24,7 +24,7 @@ const addPost = async (request, response, next) => {
 const getLatestPosts = async (request, response, next) => {
     try {
         const posts = await collectLatestPosts();
-        if (posts.length === 0)  {
+        if (posts.length === 0) {
             response.status(404).send({status: "error", message: "No posts exists"})
         } else {
             response.status(200).send({status: "ok", data: posts})
@@ -81,13 +81,24 @@ const getPostsByDate = async (request, response, next) => {
 const deletePost = async (request, response, next) => {
 
     try {
-        const {idPost} = request.params;
-        const rowToDelete = await deletePostById(idPost);
 
-        if (rowToDelete === 0) {
+        const currentUserId = request.auth.id;
+        console.log(currentUserId)
+        const {idPost} = request.params;
+        const dataPost = await findPostById(idPost);
+        console.log(dataPost)
+
+        if (!dataPost) {
             response.status(400).send({status: "error", message: `id post= ${idPost} doesn't exist`})
+        } else if (dataPost.user_id !== currentUserId) {
+            response.status(400).send({status: "error", message: `This post is not yours to delete it`})
         } else {
-            response.status(200).send({status: "ok", message: "deleted user"})
+            const rowToDelete = await deletePostById(idPost);
+            if (rowToDelete === 0) {
+                response.status(400).send({status: "error", message: `id post= ${idPost} doesn't exist`})
+            } else {
+                response.status(200).send({status: "ok", message: `deleted post number: ${idPost}`})
+            }
         }
 
     } catch (error) {

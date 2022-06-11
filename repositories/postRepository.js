@@ -32,10 +32,12 @@ const findPostByDate = async (date) => {
     return posts;
 
 }
-
+const findPostById = async(postId) =>{
+    const [[post]]=await pool.query(`SELECT * FROM posts WHERE id=?`, [postId]);
+    return post;
+}
 const deletePostById = async (postId)=>{
     const [{affectedRows}]=await pool.query(`DELETE FROM posts WHERE id =?`, [postId]);
     return affectedRows;
-
 }
-export {getPosts, findPostByTopic, createPost,deletePostById, collectLatestPosts, findPostByDate}
+export {getPosts, findPostByTopic, createPost,deletePostById, collectLatestPosts, findPostByDate, findPostById}

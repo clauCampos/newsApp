@@ -9,7 +9,7 @@ const { SERVER_PORT } = process.env;
 const app = express();
 
 app.use(express.json());
-app.use('/api/v1', router)
+app.use('/api/v1/posts', router)
 app.use('/api/v1/user', userRouter)
 
 app.use(notFound);

@@ -9,6 +9,7 @@ import {
   selectPostById,
   updatePostById
 } from "../repositories/postRepository.js";
+import {generateError} from "../helpers/generateError.js";
 
 const addPost = async (request, response, next) => {
   try {

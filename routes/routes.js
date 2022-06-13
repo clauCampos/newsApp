@@ -13,9 +13,9 @@ import { validateAuthorization } from "../middlewares/validateAuthorization.js";
 export const router = express.Router();
 
 router.get("/allPosts", getAllPosts);
-router.get("/posts/:topic", getPostsByTopic);
+router.get("/:topic", getPostsByTopic);
 router.post("/allPosts", validateAuthorization, addPost);
-router.delete("/posts/:idPost", validateAuthorization, deletePost);
-router.get("/latestPosts", getLatestPosts);
+router.delete("/delete/:idPost", validateAuthorization, deletePost);
+router.get("/get/latestPosts", getLatestPosts);
 router.get("/filter_by_date/:date", getPostsByDate);
-router.patch("/posts/:idPost", validateAuthorization, editPost);
+router.patch("/:idPost", validateAuthorization, editPost);

@@ -10,7 +10,7 @@ Registered users can also edit and delete news published by the user, vote posit
 
 ## Endpoints 💻
 
-_In the postman folder you have a json with all the configured endpoints.Also I leave them here:_
+_In the DOCS folder you have a json ready to use in Postman with all the configured endpoints.Also I leave them here:_
 
 ### USERS 👤
 

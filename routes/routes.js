@@ -15,7 +15,7 @@ export const router = express.Router();
 router.get("/allPosts", getAllPosts);
 router.get("/:topic", getPostsByTopic);
 router.post("/allPosts", validateAuthorization, addPost);
-router.delete("/delete/:idPost", validateAuthorization, deletePost);
+router.delete("/:idPost", validateAuthorization, deletePost);
 router.get("/get/latestPosts", getLatestPosts);
 router.get("/filter_by_date/:date", getPostsByDate);
 router.patch("/:idPost", validateAuthorization, editPost);

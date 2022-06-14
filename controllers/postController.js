@@ -10,9 +10,12 @@ import {
   updatePostById
 } from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
+import {createPostSchema} from "../schemas/postSchema.js";
 
 const addPost = async (request, response, next) => {
   try {
+
+    await createPostSchema.validateAsync(request.body);
     const actualDate = new Date(Date.now());
     const user_id = request.auth.id;
     const { title, opening_line, text, topic, photo } = request.body;

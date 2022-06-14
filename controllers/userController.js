@@ -5,10 +5,9 @@ import {signInUserSchema} from "../schemas/userSchema.js";
 
 const addUser = async (request, response, next) => {
     try {
-        //VALIDATE DATA input(using JOI)
+
         await signInUserSchema.validateAsync(request.body);
         const {nick_name: nick, email, bio, avatar, password} = request.body;
-        console.log(nick, email, bio, avatar, password)
 
         const emailResult = await findUserByEmail(email);
         const nickNameResult = await findUserByNickName(nick)

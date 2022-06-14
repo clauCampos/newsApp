@@ -54,7 +54,21 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "http://localhost:4000/api/v1/posts/get/latestPosts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"v1",
+						"posts",
+						"get",
+						"latestPosts"
+					]
+				}
 			},
 			"response": []
 		},
@@ -63,7 +77,21 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "http://localhost:4000/api/v1/posts/filter_by_date/2022-06-16",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"api",
+						"v1",
+						"posts",
+						"filter_by_date",
+						"2022-06-16"
+					]
+				}
 			},
 			"response": []
 		},
@@ -72,6 +100,15 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nick_name\": \"testuser\",\r\n  \"email\": \"test@gmail.com\" \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:4000/api/v1/user/signin",
 					"protocol": "http",
@@ -94,6 +131,15 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"email\": \"maria@gmail.com\" ,\r\n\"password\": \"maria123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:4000/api/v1/user/login",
 					"protocol": "http",
@@ -116,6 +162,15 @@
 			"request": {
 				"method": "PATCH",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Boris Johnson says plan to amend Northern Ireland protocol 'not a big deal'\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://localhost:4000/api/v1/posts/1",
 					"protocol": "http",
@@ -139,7 +194,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:4000/api/v1/posts/delete/1",
+					"raw": "http://localhost:4000/api/v1/posts/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -149,7 +204,6 @@
 						"api",
 						"v1",
 						"posts",
-						"delete",
 						"1"
 					]
 				}

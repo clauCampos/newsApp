@@ -10,7 +10,7 @@ import {
   updatePostById
 } from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
-import {createPostSchema} from "../schemas/postSchema.js";
+import {createPostSchema, editPostSchema, idPostSchema} from "../schemas/postSchema.js";
 
 const addPost = async (request, response, next) => {
   try {
@@ -144,9 +144,10 @@ const deletePost = async (request, response, next) => {
 const editPost = async (request, response, next) => {
     try {
       const { idPost } = request.params;
-  
+      await idPostSchema.validateAsync(idPost)
+      await editPostSchema.validateAsync(request.body);
       const post = await selectPostById(idPost);
-      console.log(post);
+
       if (!post) {
         throw generateError("Post does not exist!", 404);
       }

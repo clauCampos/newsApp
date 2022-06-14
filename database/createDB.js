@@ -1,9 +1,7 @@
 import 'dotenv/config'
 import {getPool} from "./getPool.js";
 
-const {
-    DATABASE_NAME
-} = process.env
+const {DATABASE_NAME} = process.env
 
 const pool = getPool();
 const createDB = async () => {

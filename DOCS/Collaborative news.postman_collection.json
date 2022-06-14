@@ -102,7 +102,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"nick_name\": \"testuser\",\r\n  \"email\": \"test@gmail.com\" \r\n}",
+					"raw": "{\r\n  \"nick_name\": \"testuser\",\r\n  \"email\": \"test@gmail.com\",\r\n  \"password\": \"testingapi\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

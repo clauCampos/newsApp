@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import express from 'express'
-import {router} from "./routes/routes.js";
+import {postRouter} from "./routes/routesPosts.js";
 import {userRouter} from "./routes/routesUsers.js";
 import {notFound} from "./middlewares/notFound.js";
 import {handleError} from "./middlewares/handleError.js";
@@ -9,7 +9,7 @@ const { SERVER_PORT } = process.env;
 const app = express();
 
 app.use(express.json());
-app.use('/api/v1/posts', router)
+app.use('/api/v1/posts', postRouter)
 app.use('/api/v1/user', userRouter)
 
 app.use(notFound);

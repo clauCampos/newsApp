@@ -10,7 +10,7 @@ import {
   updatePostById
 } from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
-import {createPostSchema, editPostSchema, idPostSchema} from "../schemas/postSchema.js";
+import {createPostSchema, editPostSchema, idPostSchema} from "../schemas-validation/postSchema.js";
 
 const addPost = async (request, response, next) => {
   try {

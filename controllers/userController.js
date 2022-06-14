@@ -1,7 +1,7 @@
 import {findUserByEmail, findUserByNickName, insertUser} from "../repositories/userRepository.js";
 import bcrypt, {hash} from "bcrypt";
 import jsonwebtoken from 'jsonwebtoken'
-import {signInUserSchema} from "../schemas/userSchema.js";
+import {signInUserSchema} from "../schemas-validation/userSchema.js";
 
 const addUser = async (request, response, next) => {
     try {

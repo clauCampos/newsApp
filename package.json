@@ -9,7 +9,8 @@
     "dev": "nodemon server.js",
     "create_db": "node database/createDB.js",
     "init_table": "node database/initDB.js",
-    "data_loader": "node database/populateDB.js"
+    "data_loader": "node database/populateDB.js",
+    "create_folders": "node helpers/createFoldersToStoreFiles.js"
   },
   "repository": {
     "type": "git",

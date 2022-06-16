@@ -3,6 +3,6 @@
 .env
 package-lock.json
 .idea/
-validations
 requirements.md
-helpers/uploads-photos
+upload-photos-posts
+upload-avatar-users

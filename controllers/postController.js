@@ -4,7 +4,7 @@ import {
 } from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
 import {bodyPostSchema, idPostSchema} from "../schemas-validation/postSchema.js";
-import {processAndSaveImage} from "../helpers/uploadImage.js";
+import {processImage, savePostImage} from "../helpers/handleImage.js";
 
 const addPost = async (request, response, next) => {
     try {
@@ -15,7 +15,10 @@ const addPost = async (request, response, next) => {
 
         let picName = null;
         if (request.files?.photo) {
-            picName = await processAndSaveImage(request.files?.photo.data);
+            const image = await processImage(request.files?.photo.data)
+            await savePostImage(image[0], image[1])
+            picName = image[0];
+            console.log(picName)
         }
         const insertedId = await createPost(title, opening_line, text, topic, picName, actualDate, user_id);
         response.status(200)

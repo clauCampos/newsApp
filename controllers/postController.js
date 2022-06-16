@@ -1,7 +1,5 @@
-import {
-    createPost, deletePostById, findPostByTopic, getPosts, collectLatestPosts, findPostByDate, findPostById,
-    updatePostById
-} from "../repositories/postRepository.js";
+import {createPost, deletePostById, findPostByTopic, getPosts, collectLatestPosts, findPostByDate, findPostById,
+    updatePostById} from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
 import {bodyPostSchema, idPostSchema} from "../schemas-validation/postSchema.js";
 import {processImage, savePostImage} from "../helpers/handleImage.js";
@@ -18,7 +16,6 @@ const addPost = async (request, response, next) => {
             const image = await processImage(request.files?.photo.data)
             await savePostImage(image[0], image[1])
             picName = image[0];
-            console.log(picName)
         }
         const insertedId = await createPost(title, opening_line, text, topic, picName, actualDate, user_id);
         response.status(200)

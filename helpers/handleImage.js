@@ -1,7 +1,7 @@
 import path from "path";
-import {imagePostPath} from "./createFoldersToStoreFiles.js";
+import {imagePostPath, imageUserPath} from "./createFoldersToStoreFiles.js";
 import sharp from "sharp";
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 
 const processImage = async (imageBuffer) => {
     const image = sharp(imageBuffer);
@@ -16,5 +16,7 @@ const processImage = async (imageBuffer) => {
 const savePostImage = async (imageFileName, image) => {
     await image.toFile(path.join(imagePostPath, imageFileName));
 }
-
-export {processImage, savePostImage}
+const saveUserImage = async (imageFileName, image) => {
+    await image.toFile(path.join(imageUserPath, imageFileName));
+}
+export {processImage, savePostImage, saveUserImage}

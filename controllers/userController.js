@@ -2,23 +2,28 @@ import {findUserByEmail, findUserByNickName, insertUser} from "../repositories/u
 import bcrypt, {hash} from "bcrypt";
 import jsonwebtoken from 'jsonwebtoken'
 import {bodyUserSchema} from "../schemas-validation/userSchema.js";
+import {processImage, saveUserImage} from "../helpers/handleImage.js";
 
 const addUser = async (request, response, next) => {
     try {
 
         await bodyUserSchema.validateAsync(request.body);
-        const {nick_name: nick, email, bio, avatar, password} = request.body;
+        const {nick_name: nick, email, bio, password} = request.body;
 
         const emailResult = await findUserByEmail(email);
         const nickNameResult = await findUserByNickName(nick)
         console.log(emailResult.length, nickNameResult.length)
         if ((emailResult.length !== 0) || (nickNameResult.length !== 0)) {
-            response.status(404).send({
-                status: "error",
-                message: "already exists user with that email or nick name"
-            })
+            response.status(404).send({status: "error", message: "already exists user with that email or nick name"})
         }
         const encryptedPassword = await hash(password, 10)
+
+        let avatar = null;
+        if (request.files?.avatar) {
+            const image = await processImage(request.files?.avatar.data)
+            await saveUserImage(image[0], image[1])
+            avatar = image[0];
+        }
         await insertUser(nick, email, bio, avatar, encryptedPassword);
         response.status(200).send({status: "ok", message: `new user created with email: ${email}`})
 

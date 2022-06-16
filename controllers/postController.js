@@ -3,12 +3,12 @@ import {
     updatePostById
 } from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
-import {createPostSchema, editPostSchema, idPostSchema} from "../schemas-validation/postSchema.js";
+import {bodyPostSchema, idPostSchema} from "../schemas-validation/postSchema.js";
 import {processAndSaveImage} from "../helpers/uploadImage.js";
 
 const addPost = async (request, response, next) => {
     try {
-        await createPostSchema.validateAsync(request.body);
+        await bodyPostSchema.validateAsync(request.body);
         const actualDate = new Date(Date.now());
         const user_id = request.auth.id;
         const {title, opening_line, text, topic} = request.body;
@@ -111,7 +111,7 @@ const editPost = async (request, response, next) => {
     try {
         const {idPost} = request.params;
         await idPostSchema.validateAsync(idPost)
-        await editPostSchema.validateAsync(request.body);
+        await bodyPostSchema.validateAsync(request.body);
         const post = await findPostById(idPost);
 
         if (!post) {

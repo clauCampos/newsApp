@@ -1,12 +1,12 @@
 import {findUserByEmail, findUserByNickName, insertUser} from "../repositories/userRepository.js";
 import bcrypt, {hash} from "bcrypt";
 import jsonwebtoken from 'jsonwebtoken'
-import {signInUserSchema} from "../schemas-validation/userSchema.js";
+import {bodyUserSchema} from "../schemas-validation/userSchema.js";
 
 const addUser = async (request, response, next) => {
     try {
 
-        await signInUserSchema.validateAsync(request.body);
+        await bodyUserSchema.validateAsync(request.body);
         const {nick_name: nick, email, bio, avatar, password} = request.body;
 
         const emailResult = await findUserByEmail(email);

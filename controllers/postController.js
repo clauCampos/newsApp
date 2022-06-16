@@ -3,17 +3,26 @@ import {
     updatePostById} from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
 import {createPostSchema, editPostSchema, idPostSchema} from "../schemas-validation/postSchema.js";
+import {processAndSaveImage} from "../helpers/uploadImage.js";
 
 const addPost = async (request, response, next) => {
     try {
         await createPostSchema.validateAsync(request.body);
         const actualDate = new Date(Date.now());
         const user_id = request.auth.id;
-        const {title, opening_line, text, topic, photo} = request.body;
+        const {title, opening_line, text, topic} = request.body;
+        const photo = request.files?.photo;
 
-        const insertedId = await createPost(title, opening_line, text, topic, photo, actualDate, user_id);
-        response.status(200)
-            .send({status: "ok", message: `new post created with id: ${insertedId}`});
+        if (!request.files?.photo) {
+            const insertedId = await createPost(title, opening_line, text, topic, photo, actualDate, user_id);
+            response.status(200)
+                .send({status: "ok", message: `new post created with id: ${insertedId}`});
+        } else {
+            const picName = await processAndSaveImage(request.files?.photo.data);
+            const insertedId = await createPost(title, opening_line, text, topic, picName, actualDate, user_id);
+            response.status(200)
+                .send({status: "ok", message: `new post created with id: ${insertedId}`});
+        }
     } catch (error) {
         next(error);
     }

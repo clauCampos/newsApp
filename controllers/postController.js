@@ -123,7 +123,15 @@ const editPost = async (request, response, next) => {
         if (post.user_id !== userID) {
             throw generateError("Editing other's users posts is not allowed!", 400);
         }
-        await updatePostById({...post, ...request.body});
+
+        if (request.files?.photo) {
+            const image = await processImage(request.files?.photo.data)
+            await savePostImage(image[0], image[1])
+            const picName = image[0];
+            console.log(picName)
+            request.body.photo = picName;
+        }
+        await updatePostById({...post, ...request.body });
         response.status(200).send({status: "ok", message: "Post updated!"});
 
     } catch (error) {

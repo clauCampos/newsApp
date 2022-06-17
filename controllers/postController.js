@@ -1,12 +1,12 @@
 import {createPost, deletePostById, findPostByTopic, getPosts, collectLatestPosts, findPostByDate, findPostById,
     updatePostById} from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
-import {bodyPostSchema, idPostSchema} from "../schemas-validation/postSchema.js";
+import {createPostSchema, editPostSchema, idPostSchema, topicSchema} from "../schemas-validation/postSchema.js";
 import {processImage, savePostImage} from "../helpers/handleImage.js";
 
 const addPost = async (request, response, next) => {
     try {
-        await bodyPostSchema.validateAsync(request.body);
+        await createPostSchema.validateAsync(request.body);
         const actualDate = new Date(Date.now());
         const user_id = request.auth.id;
         const {title, opening_line, text, topic} = request.body;
@@ -54,6 +54,7 @@ const getAllPosts = async (request, response, next) => {
 const getPostsByTopic = async (request, response, next) => {
     try {
         const {topic} = request.params;
+        await topicSchema.validateAsync(topic)
         const posts = await findPostByTopic(topic);
 
         if (posts.length === 0) {
@@ -68,7 +69,6 @@ const getPostsByTopic = async (request, response, next) => {
 const getPostsByDate = async (request, response, next) => {
     try {
         const {date} = request.params;
-
         const posts = await findPostByDate(date);
 
         if (posts.length === 0) {
@@ -85,6 +85,7 @@ const deletePost = async (request, response, next) => {
     try {
         const currentUserId = request.auth.id;
         const {idPost} = request.params;
+        await idPostSchema.validateAsync(idPost);
         const dataPost = await findPostById(idPost);
 
         if (!dataPost) {
@@ -111,7 +112,7 @@ const editPost = async (request, response, next) => {
     try {
         const {idPost} = request.params;
         await idPostSchema.validateAsync(idPost)
-        await bodyPostSchema.validateAsync(request.body);
+        await editPostSchema.validateAsync(request.body);
         const post = await findPostById(idPost);
 
         if (!post) {

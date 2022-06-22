@@ -11,25 +11,34 @@ const createPost = async (titleText, openingLine, textValue, chosenTopic, photo,
 };
 
 const getPosts = async () => {
-  const [posts] = await pool.query(`SELECT * FROM posts`);
+  const [posts] = await pool.query(
+    `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+    users.nick_name AS author
+    FROM posts RIGHT JOIN users ON posts.user_id = users.id`);
   return posts;
 };
 
 const collectLatestPosts = async () => {
   const [posts] = await pool.query(
-      `SELECT * FROM posts WHERE actual_date > now() - interval 24 hour`);
+      `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+      users.nick_name AS author
+      FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date > now() - interval 24 hour`);
   return posts;
 };
 
 const findPostByTopic = async (topic) => {
   const [posts] = await pool.query(
-      `SELECT * FROM posts WHERE topic= ?`, [topic]);
+      `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+      users.nick_name AS author
+      FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE topic= ?`, [topic]);
   return posts;
 };
 
 const findPostByDate = async (date) => {
   const [posts] = await pool.query(
-      `SELECT * FROM posts WHERE actual_date LIKE "${date}%"`);
+      `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+      users.nick_name AS author
+      FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date LIKE "${date}%"`);
   return posts;
 };
 

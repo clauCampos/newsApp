@@ -12,7 +12,7 @@ const createPost = async (titleText, openingLine, textValue, chosenTopic, photo,
 
 const getPosts = async () => {
   const [posts] = await pool.query(
-    `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+    `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
     users.nick_name AS author
     FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE title IS NOT NULL`);
   return posts;
@@ -20,7 +20,7 @@ const getPosts = async () => {
 
 const collectLatestPosts = async () => {
   const [posts] = await pool.query(
-      `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+      `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
       users.nick_name AS author
       FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date > now() - interval 24 hour`);
   return posts;
@@ -28,7 +28,7 @@ const collectLatestPosts = async () => {
 
 const findPostByTopic = async (topic) => {
   const [posts] = await pool.query(
-      `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+      `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
       users.nick_name AS author
       FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE topic= ?`, [topic]);
   return posts;
@@ -36,7 +36,7 @@ const findPostByTopic = async (topic) => {
 
 const findPostByDate = async (date) => {
   const [posts] = await pool.query(
-      `SELECT posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+      `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
       users.nick_name AS author
       FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date LIKE "${date}%"`);
   return posts;

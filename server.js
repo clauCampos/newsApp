@@ -4,10 +4,15 @@ import {postRouter} from "./routes/routesPosts.js";
 import {userRouter} from "./routes/routesUsers.js";
 import {notFound} from "./middlewares/notFound.js";
 import {handleError} from "./middlewares/handleError.js";
-import fileUpload from "express-fileupload"
+import fileUpload from "express-fileupload";
+import cors from "cors";
 const { SERVER_PORT } = process.env;
 const app = express();
 
+app.use(
+    cors({
+      origin: ["http://localhost:3000", "www.mi-otro-front.com"],})
+  );
 app.use(express.json());
 app.use(fileUpload());
 

@@ -16,10 +16,10 @@ const bodyUserSchema = Joi.object({
             400)),
 
     password: Joi.string().required()
-        .min(6).max(100)
+        .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/)
         .error(generateError(
-            "Password is a required field and must be between 6 and 100 characters.", 400)),
-
+            "Password is a required field and must contain at least one letter and one number (between 8-20 characters).", 400)),
+           
     bio: Joi.string()
         .min(10).max(200)
         .error(generateError("Bio must be between 10 and 200 characters.", 400)),

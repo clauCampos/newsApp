@@ -24,10 +24,6 @@ const createPostSchema = Joi.object({
         .valid(...topics)
         .error(generateError("Topic must be sports, politics or finances.", 400)),
 
-    photo: Joi.string()
-        .min(5).max(200)
-        .regex(/.jpg$/)
-        .error(generateError("Photo must be a valid format image(.jpg).", 400)),
 });
 
 const editPostSchema = Joi.object({
@@ -50,11 +46,6 @@ const editPostSchema = Joi.object({
     topic: Joi.any()
         .valid(...topics)
         .error(generateError("Topic must be sports, politics or finances.", 400)),
-
-    photo: Joi.string()
-        .min(5).max(200)
-        .regex(/.jpg$/)
-        .error(generateError("Photo must be a valid format image(.jpg).", 400)),
 });
 
 const topicSchema = Joi.any()

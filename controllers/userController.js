@@ -3,6 +3,7 @@ import bcrypt, {hash} from "bcrypt";
 import jsonwebtoken from 'jsonwebtoken'
 import {bodyUserSchema} from "../schemas-validation/userSchema.js";
 import {processImage, saveUserImage} from "../helpers/handleImage.js";
+import { photoSchema } from "../schemas-validation/photoSchema.js";
 
 const addUser = async (request, response, next) => {
     try {
@@ -20,6 +21,7 @@ const addUser = async (request, response, next) => {
 
         let avatar = null;
         if (request.files?.avatar) {
+            await photoSchema.validateAsync(request.files.avatar.name)
             const image = await processImage(request.files?.avatar.data)
             await saveUserImage(image[0], image[1])
             avatar = image[0];

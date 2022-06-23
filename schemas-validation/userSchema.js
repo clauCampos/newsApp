@@ -24,10 +24,6 @@ const bodyUserSchema = Joi.object({
         .min(10).max(200)
         .error(generateError("Bio must be between 10 and 200 characters.", 400)),
 
-    avatar: Joi.string()
-        .min(5).max(200)
-        .regex(/.jpg$/)
-        .error(generateError("Avatar must be a valid format image(.jpg).", 400)),
 });
 
 export {bodyUserSchema}

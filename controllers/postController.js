@@ -2,6 +2,7 @@ import {createPost, deletePostById, findPostByTopic, getPosts, collectLatestPost
     updatePostById} from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
 import {createPostSchema, editPostSchema, idPostSchema, topicSchema} from "../schemas-validation/postSchema.js";
+import { photoSchema } from "../schemas-validation/photoSchema.js";
 import {processImage, savePostImage} from "../helpers/handleImage.js";
 
 const addPost = async (request, response, next) => {
@@ -13,6 +14,7 @@ const addPost = async (request, response, next) => {
 
         let picName = null;
         if (request.files?.photo) {
+            await photoSchema.validateAsync(request.files.photo.name)
             const image = await processImage(request.files?.photo.data)
             await savePostImage(image[0], image[1])
             picName = image[0];
@@ -125,6 +127,7 @@ const editPost = async (request, response, next) => {
         }
 
         if (request.files?.photo) {
+            await photoSchema.validateAsync(request.files.photo.name)
             const image = await processImage(request.files?.photo.data)
             await savePostImage(image[0], image[1])
             const picName = image[0];

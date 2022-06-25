@@ -12,11 +12,11 @@ export const addVote = async (request, response, next) => {
     const data = await findPostById(idPost);
 
     if (!data) {
-      response.status(400).send({status: "error", message: `id post= ${idPost} doesn't exist`});
+      throw generateError(`id post= ${idPost} doesn't exist`, 404);
     
     } else if (data.user_id === userId) {
-      response.status(400).send({status: "error", message: `You can't vote your own posts`});
-    
+        throw generateError(`You can't vote your own posts`, 403);
+     
     } else if (request.body.is_vote_positive) {
       const booleanValueInput = request.body.is_vote_positive;
       const valueToInsert = booleanToIntValue(booleanValueInput);
@@ -25,15 +25,15 @@ export const addVote = async (request, response, next) => {
 
       if (foundVote) {
         await updateVote(userId, idPost, valueToInsert);
-        response.status(200).send({status: "ok", message: `vote updated for id post= ${idPost} `});
+        response.status(200).send({status: "ok", message: `vote updated for id post= ${idPost}`});
 
       } else {
         await insertVote(userId, idPost, valueToInsert);
-        response.status(200).send({status: "ok", message: `vote updated for id post= ${idPost} `});
+        response.status(200).send({status: "ok", message: `vote updated for id post= ${idPost}`});
       }
 
     } else {
-      response.status(400)
+      response.status(406)
       .send({status: "error", message: `to vote a post its mandatory to choose  positive or negative vote`});
     }
   } catch (error) {
@@ -49,7 +49,7 @@ export const deleteVote = async (request, response, next) => {
       const votePostByUserExists= await checkIfVoteExists(userId, idPost);
       
       if (!votePostByUserExists) {
-        throw generateError(`can't delete this vote because is not yours or doesn't exist`, 404);
+        throw generateError(`can't delete this vote because is not yours or doesn't exist`, 405);
     }
     await deleteSingleVote(userId, idPost)
     response.status(200).send({status: "ok", message: `vote deleted`});

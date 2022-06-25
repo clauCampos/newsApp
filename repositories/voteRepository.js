@@ -11,10 +11,10 @@ const insertVote = async (userId, idPost, booleanValueInput) => {
 
 const checkIfVoteExists = async (userId, idPost)=>{
   
-    const [[rowsFound]] =await pool.query(
+    const [[foundRows]] =await pool.query(
         `SELECT * FROM user_posts
          WHERE post_id= ${idPost} && user_id=${userId}`)
-    return rowsFound;
+    return foundRows;
 }
 
 const updateVote = async(userId, idPost,booleanValueInput)=>{

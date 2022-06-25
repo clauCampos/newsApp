@@ -24,4 +24,9 @@ const updateVote = async(userId, idPost,booleanValueInput)=>{
         return [{affectedRows}];
 }
 
-export {insertVote, checkIfVoteExists, updateVote}
+const deleteSingleVote= async(userId, idPost)=>{
+    await pool.query(
+        `DELETE FROM user_posts WHERE user_id = ? AND  post_id =?`, [userId, idPost])
+}
+
+export {insertVote, checkIfVoteExists, updateVote, deleteSingleVote}

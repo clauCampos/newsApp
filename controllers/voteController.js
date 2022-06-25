@@ -1,11 +1,14 @@
-import {checkIfVoteExists, insertVote, updateVote} from "../repositories/voteRepository.js";
+import {checkIfVoteExists, insertVote, updateVote, deleteSingleVote} from "../repositories/voteRepository.js";
 import { findPostById } from "../repositories/postRepository.js";
 import { booleanToIntValue } from "../helpers/convertBooleanToInteger.js";
+import { idPostSchema } from "../schemas-validation/postSchema.js";
+import { generateError } from "../helpers/generateError.js";
 
 export const addVote = async (request, response, next) => {
   try {
     const userId = request.auth.id;
     const { idPost } = request.params;
+    await idPostSchema.validateAsync(idPost);
     const data = await findPostById(idPost);
 
     if (!data) {
@@ -37,3 +40,21 @@ export const addVote = async (request, response, next) => {
     next(error);
   }
 };
+
+export const deleteVote = async (request, response, next) => {
+    try {
+      const userId = request.auth.id;
+      const { idPost } = request.params;
+      await idPostSchema.validateAsync(idPost);
+      const votePostByUserExists= await checkIfVoteExists(userId, idPost);
+      
+      if (!votePostByUserExists) {
+        throw generateError(`can't delete this vote because is not yours or doesn't exist`, 404);
+    }
+    await deleteSingleVote(userId, idPost)
+    response.status(200).send({status: "ok", message: `vote deleted`});
+
+    } catch (error) {
+      next(error);
+    }
+  };

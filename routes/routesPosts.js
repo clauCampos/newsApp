@@ -8,7 +8,7 @@ import {
   deletePost,
   editPost,
 } from "../controllers/postController.js";
-import { addVote } from "../controllers/voteController.js";
+import { addVote, deleteVote } from "../controllers/voteController.js";
 import { validateAuthorization } from "../middlewares/validateAuthorization.js";
 
 export const postRouter = express.Router();
@@ -23,3 +23,4 @@ postRouter.patch("/:idPost", validateAuthorization, editPost);
 postRouter.delete("/:idPost", validateAuthorization, deletePost);
 
 postRouter.post("/vote/:idPost", validateAuthorization, addVote);
+postRouter.delete("/vote/:idPost", validateAuthorization, deleteVote);

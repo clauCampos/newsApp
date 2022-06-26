@@ -25,6 +25,6 @@ postRouter.patch("/:idPost", validateAuthorization, editPost);
 postRouter.delete("/:idPost", validateAuthorization, deletePost);
 
 postRouter.post("/vote/:idPost", validateAuthorization, addVote);
-postRouter.patch("/vote/:idPost", validateAuthorization, editVote)
+postRouter.patch("/vote/:idPost", validateAuthorization, editVote);
 postRouter.delete("/vote/:idPost", validateAuthorization, deleteVote);
 postRouter.get("/vote/:idPost", getTotalVotesByPost);

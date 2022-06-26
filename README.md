@@ -44,7 +44,7 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 `GET: http://localhost:4000/api/v1/posts/allPosts`
 
 
->__Retrieve last day posts.__
+>__Retrieve last day posts sorted by total votes.__
 `GET: http://localhost:4000/api/v1/posts/get/latestPosts`
 
 >__Retrieve all posts categorized with a specific topic.__
@@ -82,6 +82,26 @@ _For the following endpoints it's mandatory to be a registered user, **don't for
 >__Delete a post.__
 `DELETE: http://localhost:4000/api/v1/posts/:idPost`
 
+>__Vote a post.__ (+1 || -1)
+`POST: http://localhost:4000/api/v1/posts/vote/:idPost`
+>```
+>Example for adding to body to vote +1:
+>
+>{
+>"is_vote_positive": "true"
+>}
+
+>__Update a vote.__ (+1 || -1)
+`POST: http://localhost:4000/api/v1/posts/vote/:idPost`
+>```
+>Example for adding to body:
+>
+>{
+>"is_vote_positive": "false"
+>}
+
+>__Delete your own vote from a post.__
+`DELETE: http://localhost:4000/api/v1/posts/vote/:idPost`
 
 ### Back-end Tech Stacks:
 

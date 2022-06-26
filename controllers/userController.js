@@ -13,7 +13,7 @@ const addUser = async (request, response, next) => {
 
         const emailResult = await findUserByEmail(email);
         const nickNameResult = await findUserByNickName(nick)
-        console.log(emailResult.length, nickNameResult.length)
+
         if ((emailResult.length !== 0) || (nickNameResult.length !== 0)) {
             response.status(404).send({status: "error", message: "already exists user with that email or nick name"})
         }
@@ -55,7 +55,6 @@ const loginUser = async (request, response, next) => {
         const tokenPayload = {
             id: user[0].id,
         };
-        console.log("tokenpayload" + {tokenPayload})
         const token = jsonwebtoken.sign(tokenPayload, process.env.JWT_SECRET, {
             expiresIn: "7d",
         });
@@ -66,6 +65,5 @@ const loginUser = async (request, response, next) => {
         next(error)
     }
 }
-
 
 export {addUser, loginUser}

@@ -133,7 +133,6 @@ const editPost = async (request, response, next) => {
             const image = await processImage(request.files?.photo.data)
             await savePostImage(image[0], image[1])
             const picName = image[0];
-            console.log(picName)
             request.body.photo = picName;
         }
         await updatePostById({...post, ...request.body });

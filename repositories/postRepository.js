@@ -25,7 +25,23 @@ const collectLatestPosts = async () => {
       FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date > now() - interval 24 hour`);
   return posts;
 };
+const collectLatestPostsSortedByVotes = async()=>{
+  const[posts]= await pool.query(`
+    SELECT posts.id, title, opening_line, text, topic, photo, actual_date AS creation_date, nick_name AS author,
+    SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
+    - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
+FROM
+    user_post_votes RIGHT JOIN posts 
+    ON user_post_votes.post_id = posts.id
+	RIGHT JOIN 
+    users ON posts.user_id = users.id
+    WHERE actual_date > NOW() - INTERVAL 24 HOUR
+  GROUP BY post_id
+  ORDER BY total_votes desc, creation_date desc;`
+  )
 
+  return posts
+}
 const findPostByTopic = async (topic) => {
   const [posts] = await pool.query(
       `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
@@ -61,4 +77,4 @@ const updatePostById = async ({title, opening_line, text, topic, photo, actual_d
   return affectedRows;
 };
 
-export {getPosts, findPostByTopic, createPost, deletePostById, collectLatestPosts, findPostByDate, findPostById, updatePostById};
+export {getPosts, findPostByTopic, createPost, deletePostById, findPostByDate, findPostById, updatePostById, collectLatestPostsSortedByVotes};

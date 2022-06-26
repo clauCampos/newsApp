@@ -37,12 +37,13 @@ const initDB = async () => {
             );
         `);
         await pool.query(`
-        CREATE TABLE user_posts (
+        CREATE TABLE user_post_votes (
             user_id INT unsigned NOT NULL ,
             FOREIGN KEY (user_id) REFERENCES users(id),
             post_id INT UNSIGNED NOT NULL,
             FOREIGN KEY (post_id) REFERENCES posts(id),
-            is_vote_positive BOOLEAN UNIQUE);`)
+            is_vote_positive BOOLEAN);
+            `)
 
         console.log("¡Users and posts tables has been created!");
     } catch (error) {

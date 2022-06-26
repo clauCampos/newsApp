@@ -1,9 +1,10 @@
-import {createPost, deletePostById, findPostByTopic, getPosts, collectLatestPosts, findPostByDate, findPostById,
-    updatePostById} from "../repositories/postRepository.js";
+import {createPost, deletePostById, findPostByTopic, getPosts, findPostByDate, findPostById,
+    updatePostById, collectLatestPostsSortedByVotes} from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
 import {createPostSchema, editPostSchema, idPostSchema, topicSchema} from "../schemas-validation/postSchema.js";
 import { photoSchema } from "../schemas-validation/photoSchema.js";
 import {processImage, savePostImage} from "../helpers/handleImage.js";
+import { insertVote } from "../repositories/voteRepository.js";
 
 const addPost = async (request, response, next) => {
     try {
@@ -20,6 +21,7 @@ const addPost = async (request, response, next) => {
             picName = image[0];
         }
         const insertedId = await createPost(title, opening_line, text, topic, picName, actualDate, user_id);
+        await insertVote(user_id, insertedId, null)
         response.status(200)
             .send({status: "ok", message: `new post created with id: ${insertedId}`});
 
@@ -30,8 +32,8 @@ const addPost = async (request, response, next) => {
 
 const getLatestPosts = async (request, response, next) => {
     try {
-        const posts = await collectLatestPosts();
-        if (posts.length === 0) {
+      const posts = await collectLatestPostsSortedByVotes()  
+      if (posts.length === 0) {
             throw generateError(`No post created in the last 24 hours.`, 404);
         } else {
             response.status(200).send({status: "ok", data: posts});

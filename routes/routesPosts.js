@@ -8,7 +8,7 @@ import {
   deletePost,
   editPost,
 } from "../controllers/postController.js";
-import { addVote, deleteVote } from "../controllers/voteController.js";
+import { addVote, deleteVote, getTotalVotesByPost } from "../controllers/voteController.js";
 import { validateAuthorization } from "../middlewares/validateAuthorization.js";
 
 export const postRouter = express.Router();
@@ -18,9 +18,12 @@ postRouter.get("/:topic", getPostsByTopic);
 postRouter.get("/get/latestPosts", getLatestPosts);
 postRouter.get("/filter_by_date/:date", getPostsByDate);
 
+
+
 postRouter.post("/allPosts", validateAuthorization, addPost);
 postRouter.patch("/:idPost", validateAuthorization, editPost);
 postRouter.delete("/:idPost", validateAuthorization, deletePost);
 
 postRouter.post("/vote/:idPost", validateAuthorization, addVote);
 postRouter.delete("/vote/:idPost", validateAuthorization, deleteVote);
+postRouter.get("/vote/:idPost", getTotalVotesByPost);

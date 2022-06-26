@@ -1,10 +1,10 @@
-import {checkIfVoteExists, insertVote, updateVote, deleteSingleVote} from "../repositories/voteRepository.js";
+import {checkIfVoteExists, insertVote, updateVote, deleteSingleVote, getVotesByPost} from "../repositories/voteRepository.js";
 import { findPostById } from "../repositories/postRepository.js";
 import { booleanToIntValue } from "../helpers/convertBooleanToInteger.js";
 import { idPostSchema } from "../schemas-validation/postSchema.js";
 import { generateError } from "../helpers/generateError.js";
 
-export const addVote = async (request, response, next) => {
+const addVote = async (request, response, next) => {
   try {
     const userId = request.auth.id;
     const { idPost } = request.params;
@@ -41,7 +41,7 @@ export const addVote = async (request, response, next) => {
   }
 };
 
-export const deleteVote = async (request, response, next) => {
+const deleteVote = async (request, response, next) => {
     try {
       const userId = request.auth.id;
       const { idPost } = request.params;
@@ -58,3 +58,17 @@ export const deleteVote = async (request, response, next) => {
       next(error);
     }
   };
+
+const getTotalVotesByPost = async(request, response, next)=>{
+    try{
+    const { idPost } = request.params;
+    await idPostSchema.validateAsync(idPost);
+
+    const count =await getVotesByPost(idPost)
+
+    response.status(200).send({status: "ok", message: `votes count is wip`});
+    }catch(error){
+        next(error)
+    }
+}
+export {addVote, deleteVote, getTotalVotesByPost}

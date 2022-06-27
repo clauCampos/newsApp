@@ -94,7 +94,7 @@ _For the following endpoints it's mandatory to be a registered user, **don't for
 >__Update a vote.__ (+1 || -1)
 `POST: http://localhost:4000/api/v1/posts/vote/:idPost`
 >```
->Example for adding to body:
+>Example for adding to body to vote -1:
 >
 >{
 >"is_vote_positive": "false"

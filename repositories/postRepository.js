@@ -14,7 +14,7 @@ const getPosts = async () => {
   const [posts] = await pool.query(
     `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
     users.nick_name AS author
-    FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE title IS NOT NULL`);
+    FROM posts LEFT JOIN users ON posts.user_id = users.id`);
   return posts;
 };
 

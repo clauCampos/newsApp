@@ -6,12 +6,12 @@ const __dirname = fileURLToPath(import.meta.url);
 
 const photoPostPath = path.join(
     __dirname,
-    "..", "..",
+    "..", "..", "images",
     "upload-photos-posts");
 
 const photoUserPath = path.join(
     __dirname,
-    "../..",
+    "..", "..", "images",
     "upload-avatar-users")
 
 const createFolderUser = async () => {

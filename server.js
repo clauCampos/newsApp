@@ -24,15 +24,11 @@ app.use(
 );
 app.use(express.json());
 app.use(fileUpload());
-
+console.log(dirProjectRoot)
 app.use(
-  "/users",
-  express.static(path.join(dirProjectRoot,"upload-avatar-users"))
-);
-app.use(
-  "/posts",
-  express.static(path.join(dirProjectRoot, "upload-photos-posts"))
-);
+  "/images",
+  express.static(path.join(dirProjectRoot,"images"))
+); 
 
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/user", userRouter);

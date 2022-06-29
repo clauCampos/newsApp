@@ -6,7 +6,7 @@ const createPost = async (titleText, openingLine, textValue, chosenTopic, photo,
   const [{ insertId, affectedRows }] = await pool.query(
     `INSERT INTO posts (title, opening_line, text, topic, photo, actual_date, user_id) 
      VALUES (?,?,?,?,?,?,?)`,
-    [titleText, openingLine, textValue, chosenTopic, photo, actualDate, userID]);
+    [titleText, openingLine, textValue, chosenTopic, photo || "default-post-image.jpg", actualDate, userID]);
   return insertId;
 };
 

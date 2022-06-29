@@ -4,5 +4,6 @@
 package-lock.json
 .idea/
 requirements.md
-upload-photos-posts
-upload-avatar-users
+static-folders.md
+images/upload-avatar-users
+images/upload-photos-posts

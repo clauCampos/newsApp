@@ -16,9 +16,10 @@ const initDB = async () => {
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
                 bio VARCHAR(200),
-                avatar VARCHAR(200)               
+                avatar VARCHAR(200) NOT NULL DEFAULT 'default-user-avatar.jpg'                
             );
         `);
+      
         //registration_code VARCHAR(100),
 
         console.log("Creating posts table...");
@@ -30,7 +31,7 @@ const initDB = async () => {
                 opening_line VARCHAR(200) NOT NULL,
                 text VARCHAR(500) NOT NULL,
                 topic ENUM('politics', 'finances','sports'), 
-                photo VARCHAR(200),
+                photo VARCHAR(200) NOT NULL DEFAULT 'default-post-image.jpg',
                 actual_date timestamp NOT NULL,            
                 user_id INT UNSIGNED NOT NULL, 
                 FOREIGN KEY (user_id) REFERENCES users (id)

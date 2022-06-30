@@ -48,13 +48,15 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 `GET: http://localhost:4000/api/v1/posts/get/latestPosts`
 
 >__Retrieve all posts categorized with a specific topic.__
-`GET: http://localhost:4000/api/v1/posts/:topic
-`
+`GET: http://localhost:4000/api/v1/posts/:topic`
 >
 > **current topics are: sports, politics and finances*
 
 >__Retrieve all posts created given a specific date.__
 `GET: http://localhost:4000/api/v1/posts/filter_by_date/YYYY-MM-DD`
+
+>__Retrieve all posts created by a specific user.__
+`GET: http://localhost:4000/api/v1/posts/allPosts/:idUser`
 
 _For the following endpoints it's mandatory to be a registered user, **don't forget to add the token to the header authorization**._
 

@@ -42,6 +42,14 @@ FROM
 
   return posts
 }
+
+const collectPostsByUserId = async(userId)=>{
+  const [posts]= await pool.query(
+    `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
+    users.nick_name AS author
+    FROM posts LEFT JOIN users ON posts.user_id = users.id where users.id= ?`, [userId]);
+  return posts;
+}
 const findPostByTopic = async (topic) => {
   const [posts] = await pool.query(
       `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
@@ -77,4 +85,4 @@ const updatePostById = async ({title, opening_line, text, topic, photo, actual_d
   return affectedRows;
 };
 
-export {getPosts, findPostByTopic, createPost, deletePostById, findPostByDate, findPostById, updatePostById, collectLatestPostsSortedByVotes};
+export {getPosts, findPostByTopic, createPost, deletePostById, findPostByDate, findPostById, updatePostById, collectLatestPostsSortedByVotes, collectPostsByUserId};

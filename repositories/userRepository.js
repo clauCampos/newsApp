@@ -17,4 +17,9 @@ const findUserByNickName = async (nick) => {
     return user;
 }
 
-export {insertUser, findUserByEmail, findUserByNickName}
+const findUserById = async (id)=>{
+    const [user] = await pool.query(`SELECT * FROM users WHERE id = "${id}"`)
+    return user;
+}
+
+export {insertUser, findUserByEmail, findUserByNickName, findUserById}

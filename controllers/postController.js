@@ -1,10 +1,10 @@
-import {createPost, deletePostById, findPostByTopic, getPosts, findPostByDate, findPostById,
-    updatePostById, collectLatestPostsSortedByVotes} from "../repositories/postRepository.js";
+import {createPost, deletePostById, findPostByTopic, getPosts, findPostByDate, findPostById, updatePostById, collectLatestPostsSortedByVotes, collectPostsByUserId} from "../repositories/postRepository.js";
 import {generateError} from "../helpers/generateError.js";
 import {createPostSchema, editPostSchema, idPostSchema, topicSchema} from "../schemas-validation/postSchema.js";
 import { photoSchema } from "../schemas-validation/photoSchema.js";
 import {processImage, savePostImage} from "../helpers/handleImage.js";
 import { insertVote } from "../repositories/voteRepository.js";
+import { findUserById } from "../repositories/userRepository.js";
 
 const addPost = async (request, response, next) => {
     try {
@@ -84,6 +84,28 @@ const getPostsByDate = async (request, response, next) => {
         next(error);
     }
 };
+const getPostsByUserId =  async (request, response, next) => {
+    try {
+      
+        const {idUser} = request.params;
+        await idPostSchema.validateAsync(idUser);
+        const user = await findUserById(idUser);
+        const posts = await collectPostsByUserId(idUser);
+     
+        
+        if (user.length === 0){
+            throw generateError(`User ${idUser}: doesn't exist`, 404);
+        } else if (posts.length === 0) {
+            throw generateError(`User ${idUser}: doesn't have posts`, 404);
+        } else {
+            response.status(200).send({status: "ok", data: posts});
+        }
+     
+        
+    }catch(error){
+        next(error);
+    }
+}
 
 const deletePost = async (request, response, next) => {
     try {
@@ -143,4 +165,4 @@ const editPost = async (request, response, next) => {
     }
 };
 
-export {addPost, getLatestPosts, getAllPosts, getPostsByTopic, getPostsByDate, deletePost, editPost};
+export {addPost, getLatestPosts, getAllPosts, getPostsByTopic, getPostsByDate, deletePost, editPost, getPostsByUserId};

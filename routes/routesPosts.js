@@ -5,6 +5,7 @@ import {
   getAllPosts,
   getPostsByTopic,
   getPostsByDate,
+  getPostsByUserId,
   deletePost,
   editPost,
 } from "../controllers/postController.js";
@@ -17,7 +18,7 @@ postRouter.get("/allPosts", getAllPosts);
 postRouter.get("/:topic", getPostsByTopic);
 postRouter.get("/get/latestPosts", getLatestPosts);
 postRouter.get("/filter_by_date/:date", getPostsByDate);
-
+postRouter.get("/allPosts/:idUser", getPostsByUserId)
 
 
 postRouter.post("/allPosts", validateAuthorization, addPost);

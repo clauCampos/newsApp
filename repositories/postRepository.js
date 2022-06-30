@@ -47,7 +47,7 @@ const collectPostsByUserId = async(userId)=>{
   const [posts]= await pool.query(
     `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date,
     users.nick_name AS author
-    FROM posts LEFT JOIN users ON posts.user_id = users.id where users.id= ?`, [userId]);
+    FROM posts LEFT JOIN users ON posts.user_id = users.id WHERE users.id= ? ORDER BY creation_date DESC`, [userId]);
   return posts;
 }
 const findPostByTopic = async (topic) => {

@@ -1,30 +1,30 @@
-import 'dotenv/config'
-import {getPool} from "./getPool.js";
+import "dotenv/config";
+import { getPool } from "./getPool.js";
 
 const pool = getPool();
 
 const initDB = async () => {
-    try {
-        await pool.query("DROP TABLE IF EXISTS posts");
-        await pool.query("DROP TABLE IF EXISTS users");
+  try {
+    await pool.query("DROP TABLE IF EXISTS user_post_votes");
+    await pool.query("DROP TABLE IF EXISTS posts");
+    await pool.query("DROP TABLE IF EXISTS users");
 
-        console.log("Creating users table...");
-        await pool.query(`
+    console.log("Creating users table...");
+    await pool.query(`
             CREATE TABLE users (
                 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 nick_name VARCHAR(100) UNIQUE NOT NULL,
                 email VARCHAR(100) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
                 bio VARCHAR(200),
-                avatar VARCHAR(200) NOT NULL DEFAULT 'default-user-avatar.jpg'                
+                avatar VARCHAR(200) NOT NULL DEFAULT 'default-user-avatar.jpg',
+                registration_code VARCHAR(100)      
             );
         `);
-      
-        //registration_code VARCHAR(100),
 
-        console.log("Creating posts table...");
+    console.log("Creating posts table...");
 
-        await pool.query(`
+    await pool.query(`
             CREATE TABLE posts (
                 id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(100) NOT NULL,
@@ -37,21 +37,21 @@ const initDB = async () => {
                 FOREIGN KEY (user_id) REFERENCES users (id)
             );
         `);
-        await pool.query(`
+    await pool.query(`
         CREATE TABLE user_post_votes (
             user_id INT unsigned NOT NULL ,
             FOREIGN KEY (user_id) REFERENCES users(id),
             post_id INT UNSIGNED NOT NULL,
             FOREIGN KEY (post_id) REFERENCES posts(id),
             is_vote_positive BOOLEAN);
-            `)
+            `);
 
-        console.log("¡Users and posts tables has been created!");
-    } catch (error) {
-        console.error(error);
-    } finally {
-        process.exit();
-    }
+    console.log("¡Users and posts tables has been created!");
+  } catch (error) {
+    console.error(error);
+  } finally {
+    process.exit();
+  }
 };
 
 initDB();

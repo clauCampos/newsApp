@@ -16,7 +16,7 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 
 ### USERS 👤
 
-> **Create a new user.** > `POST: http://localhost:4000/api/v1/user/signin`
+> **Create a new user.** `POST: http://localhost:4000/api/v1/user/signin`
 >
 > ```
 > Example for adding to body:
@@ -30,7 +30,7 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 > }
 > ```
 
-> **Login as user.** > `POST: http://localhost:4000/api/v1/user/login`
+> **Login as user.**  `POST: http://localhost:4000/api/v1/user/login`
 >
 > ```
 > Example for adding to body:
@@ -41,7 +41,7 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 > }
 > ```
 
-> **User's Registration.** > `GET: http://localhost:4000/api/v1/user/registration`
+> **User's Registration.**  `GET: http://localhost:4000/api/v1/user/registration`
 > ```
 > Example for adding to body:
 >
@@ -52,24 +52,20 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 > }
 > ```
 
-**User's Activation.** > `GET: http://localhost:4000/api/v1/user/activate/:registrationCode`
+> **User's Activation.**  `GET: http://localhost:4000/api/v1/user/activate/:registrationCode`
 >
 > ```
 > Example of the email received:
-
-> mariat <maria@gmail.com>
+>
 > ¡Welcome to COLLECTIVE NEWS PROJECT!
 > to: mariat <maria@gmail.com>
-
 > Activate your account here: 
-
 > 'Activate'
 
-
-> **Delete an user.** > `GET: http://localhost:4000/api/v1/user/:userID`
+> **Delete an user.**  `GET: http://localhost:4000/api/v1/user/:userID`
 >
 > ```
-> Example for adding to body:
+> Example for adding to body
 >
 > {
 > "nick_name": "mariat";
@@ -78,26 +74,23 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 > }
 > ```
 
-
-userRouter.post("/registration",
-
 ### POSTS 💬
 
-> **Retrieve all posts.** > `GET: http://localhost:4000/api/v1/posts/allPosts`
+> **Retrieve all posts.** `GET: http://localhost:4000/api/v1/posts/allPosts`
 
-> **Retrieve last day posts sorted by total votes.** > `GET: http://localhost:4000/api/v1/posts/get/latestPosts`
+> **Retrieve last day posts sorted by total votes.** `GET: http://localhost:4000/api/v1/posts/get/latestPosts`
 
-> **Retrieve all posts categorized with a specific topic.** > `GET: http://localhost:4000/api/v1/posts/:topic`
+> **Retrieve all posts categorized with a specific topic.** `GET: http://localhost:4000/api/v1/posts/:topic`
 >
 > \*_current topics are: sports, politics and finances_
 
-> **Retrieve all posts created given a specific date.** > `GET: http://localhost:4000/api/v1/posts/filter_by_date/YYYY-MM-DD`
+> **Retrieve all posts created given a specific date.** `GET: http://localhost:4000/api/v1/posts/filter_by_date/YYYY-MM-DD`
 
-> **Retrieve all posts created by a specific user.** > `GET: http://localhost:4000/api/v1/posts/allPosts/:idUser`
+> **Retrieve all posts created by a specific user.** `GET: http://localhost:4000/api/v1/posts/allPosts/:idUser`
 
 _For the following endpoints it's mandatory to be a registered user, **don't forget to add the token to the header authorization**._
 
-> **Create a new post.** > `POST: http://localhost:4000/api/v1/posts/allPosts`
+> **Create a new post.** `POST: http://localhost:4000/api/v1/posts/allPosts`
 >
 > ```
 > Example for adding to body:
@@ -121,10 +114,9 @@ _For the following endpoints it's mandatory to be a registered user, **don't for
 > }
 > ```
 
-> **Delete a post.** > `DELETE: http://localhost:4000/api/v1/posts/:idPost`
+> **Delete a post.** `DELETE: http://localhost:4000/api/v1/posts/:idPost`
 
-> **Vote a post.** (+1 || -1)
-> `POST: http://localhost:4000/api/v1/posts/vote/:idPost`
+> **Vote a post.** (+1 || -1) `POST: http://localhost:4000/api/v1/posts/vote/:idPost`
 >
 > ```
 > Example for adding to body to vote +1:
@@ -134,8 +126,7 @@ _For the following endpoints it's mandatory to be a registered user, **don't for
 > }
 > ```
 
-> **Update a vote.** (+1 || -1)
-> `POST: http://localhost:4000/api/v1/posts/vote/:idPost`
+> **Update a vote.** (+1 || -1) `POST: http://localhost:4000/api/v1/posts/vote/:idPost`
 >
 > ```
 > Example for adding to body to vote -1:
@@ -145,7 +136,7 @@ _For the following endpoints it's mandatory to be a registered user, **don't for
 > }
 > ```
 
-> **Delete your own vote from a post.** > `DELETE: http://localhost:4000/api/v1/posts/vote/:idPost`
+> **Delete your own vote from a post.** `DELETE: http://localhost:4000/api/v1/posts/vote/:idPost`
 
 ### Back-end Tech Stacks:
 

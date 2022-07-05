@@ -1,5 +1,5 @@
 {
-  "name": "newsApp",
+  "name": "collective-news",
   "version": "1.0.0",
   "type": "module",
   "description": "API that allows managing collaborative news.",

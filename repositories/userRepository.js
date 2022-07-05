@@ -25,7 +25,7 @@ const findUserByNickName = async (nick) => {
 };
 
 const findUserById = async (id) => {
-  const [user] = await pool.query(`SELECT * FROM users WHERE id = "${id}"`);
+  const [user] = await pool.query(`SELECT id, nick_name, email, bio, avatar FROM users WHERE id = "${id}"`);
   return user;
 }; 
 
@@ -77,14 +77,5 @@ const removeUser = async (id) => {
   return affectedRows;
 };
 
-export {
-  insertUser,
-  findUserByEmail,
-  findUserByNickName,
-  findUserById,
-  selectUserByEmail,
-  insertUserRegistrationCode,
-  selectUserByActivationCode,
-  deleteRegistrationCode,
-  removeUser,
-};
+export {insertUser, findUserByEmail, findUserByNickName, findUserById, selectUserByEmail, insertUserRegistrationCode,
+  selectUserByActivationCode, deleteRegistrationCode, removeUser};

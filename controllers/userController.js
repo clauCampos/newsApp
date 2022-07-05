@@ -76,7 +76,7 @@ const loginUser = async (request, response, next) => {
 
     response
       .status(200)
-      .send({ status: "ok", message: `Correct login, token: ${token}` });
+      .send({ status: "ok", message: `Correct login, token: ${token}, token: token` });
   } catch (error) {
     next(error);
   }
@@ -158,4 +158,16 @@ const deleteUser = async (request, response, next) => {
   }
 };
 
-export { addUser, loginUser, registerUser, activateUser, deleteUser };
+const getProfile = async (request, response, next) => {
+  try {
+      const { id } = request.auth; 
+      
+      const user = await findUserById(id)
+
+      response.status(200).send({ status: "ok", data: user }); 
+    } catch (error) {
+      next(error);
+    }
+  };
+
+export { addUser, loginUser, registerUser, activateUser, deleteUser, getProfile };

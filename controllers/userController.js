@@ -3,8 +3,6 @@ import {
   findUserByEmail,
   findUserByNickName,
   findUserById,
-  selectUserByEmail,
-  insertUserRegistrationCode,
   selectUserByActivationCode,
   deleteRegistrationCode,
   removeUser,
@@ -18,7 +16,7 @@ import { photoSchema } from "../schemas-validation/photoSchema.js";
 import { generateError } from "../helpers/generateError.js";
 import { sendMail } from "../helpers/sendMail.js";
 
-const addUser = async (request, response, next) => {
+const registerUser = async (request, response, next) => {
   try {
     await bodyUserSchema.validateAsync(request.body);
     const { nick_name: nick, email, bio, password } = request.body;
@@ -37,14 +35,32 @@ const addUser = async (request, response, next) => {
       await saveUserImage(image[0], image[1]);
       avatar = image[0];
     }
-    if (emailResult.length === 0 && nickNameResult.length === 0) {
-      const encryptedPassword = await hash(password, 10);
-      await insertUser(nick, email, bio, avatar, encryptedPassword);
-      response.status(200).send({
-        status: "ok",
-        message: `new user created with email: ${email}`,
-      });
-    }
+
+    const encryptedPassword = await hash(password, 10);
+    const registrationCode = uuidv4();
+
+    const insertId = await insertUser({
+      nick,
+      email,
+      encryptedPassword,
+      bio,
+      avatar,
+      registrationCode,
+    });
+
+    const { SERVER_HOST, SERVER_PORT } = process.env;
+
+    await sendMail(
+      "¡Welcome to COLLECTIVE NEWS PROJECT!",
+      `
+          <p>Activate your account here:</p>
+          
+          <a href="http://${SERVER_HOST}:${SERVER_PORT}/api/v1/user/activate/${registrationCode}">Activate</a>
+          `,
+      email
+    );
+
+    response.status(201).send({ status: "ok", data: { id: insertId } });
   } catch (error) {
     next(error);
   }
@@ -77,45 +93,6 @@ const loginUser = async (request, response, next) => {
     response
       .status(200)
       .send({ status: "ok", message: `Correct login, token: ${token}, token: token` });
-  } catch (error) {
-    next(error);
-  }
-};
-
-const registerUser = async (request, response, next) => {
-  try {
-    const { nick_name, email, password } = request.body;
-
-    const userWithSameEmail = await selectUserByEmail(email);
-
-    if (userWithSameEmail) {
-      throw generateError("Already exists an user with that email", 400);
-    }
-
-    const encryptedPassword = await bcrypt.hash(password, 10);
-
-    const registrationCode = uuidv4();
-
-    const insertId = await insertUserRegistrationCode({
-      nick_name,
-      email,
-      encryptedPassword,
-      registrationCode,
-    });
-
-    const { SERVER_HOST, SERVER_PORT } = process.env;
-
-    await sendMail(
-      "¡Welcome to COLLECTIVE NEWS PROJECT!",
-      `
-          <p>Activate your account here:</p>
-          
-          <a href="http://${SERVER_HOST}:${SERVER_PORT}/api/v1/user/activate/${registrationCode}">Activate</a>
-          `,
-      email
-    );
-
-    response.status(201).send({ status: "ok", data: { id: insertId } });
   } catch (error) {
     next(error);
   }
@@ -170,4 +147,4 @@ const getProfile = async (request, response, next) => {
     }
   };
 
-export { addUser, loginUser, registerUser, activateUser, deleteUser, getProfile };
+export { registerUser, loginUser, activateUser, deleteUser, getProfile };

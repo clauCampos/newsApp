@@ -2,12 +2,27 @@ import { getPool } from "../database/getPool.js";
 
 const pool = getPool();
 
-const insertUser = async (nick, email, bio, avatar, encryptedPassword) => {
-  await pool.query(
-    `INSERT INTO users (nick_name, email, password, bio, avatar) 
-         VALUES (?,?,?,?,?)`,
-    [nick, email, encryptedPassword, bio, avatar || "default-user-avatar.jpg"]
+const insertUser = async ({
+  nick,
+  email,
+  encryptedPassword,
+  bio,
+  avatar,
+  registrationCode,
+}) => {
+  const [{ insertId }] = await pool.query(
+    "INSERT INTO users (nick_name, email, password, bio, avatar, registration_code) VALUES (?,?,?,?,?,?)",
+    [
+      nick,
+      email,
+      encryptedPassword,
+      bio,
+      avatar || "default-user-avatar.jpg",
+      registrationCode,
+    ]
   );
+
+  return insertId;
 };
 
 const findUserByEmail = async (email) => {
@@ -25,30 +40,10 @@ const findUserByNickName = async (nick) => {
 };
 
 const findUserById = async (id) => {
-  const [user] = await pool.query(`SELECT id, nick_name, email, bio, avatar FROM users WHERE id = "${id}"`);
-  return user;
-}; 
-
-const selectUserByEmail = async (email) => {
-  const [[user]] = await pool.query("SELECT * FROM users WHERE email = ?", [
-    email,
-  ]);
-
-  return user;
-};
-
-const insertUserRegistrationCode = async ({
-  nick_name,
-  email,
-  encryptedPassword,
-  registrationCode,
-}) => {
-  const [{ insertId }] = await pool.query(
-    "INSERT INTO users (nick_name, email, password, registration_code) VALUES (?,?,?,?)",
-    [nick_name, email, encryptedPassword, registrationCode]
+  const [user] = await pool.query(
+    `SELECT id, nick_name, email, bio, avatar FROM users WHERE id = "${id}"`
   );
-
-  return insertId;
+  return user;
 };
 
 const selectUserByActivationCode = async (registrationCode) => {
@@ -77,5 +72,12 @@ const removeUser = async (id) => {
   return affectedRows;
 };
 
-export {insertUser, findUserByEmail, findUserByNickName, findUserById, selectUserByEmail, insertUserRegistrationCode,
-  selectUserByActivationCode, deleteRegistrationCode, removeUser};
+export {
+  insertUser,
+  findUserByEmail,
+  findUserByNickName,
+  findUserById,
+  selectUserByActivationCode,
+  deleteRegistrationCode,
+  removeUser,
+};

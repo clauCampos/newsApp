@@ -164,5 +164,17 @@ const editPost = async (request, response, next) => {
         next(error);
     }
 };
-
-export {addPost, getLatestPosts, getAllPosts, getPostsByTopic, getPostsByDate, deletePost, editPost, getPostsByUserId};
+const getPostById = async(request, response, next)=>{
+    try {
+        const {idPost} = request.params;
+        await idPostSchema.validateAsync(idPost)
+        const post = await findPostById(idPost);
+        if (!post) {
+            throw generateError("Post doesn't exist!", 404);
+        }
+        response.status(200).send({status: "ok", data: post});
+    } catch (error) {
+        next(error);
+    }
+}
+export {addPost, getLatestPosts, getAllPosts, getPostsByTopic, getPostsByDate, deletePost, editPost, getPostsByUserId, getPostById};

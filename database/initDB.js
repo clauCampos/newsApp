@@ -34,15 +34,15 @@ const initDB = async () => {
                 photo VARCHAR(200) NOT NULL DEFAULT 'default-post-image.jpg',
                 actual_date timestamp NOT NULL,            
                 user_id INT UNSIGNED NOT NULL, 
-                FOREIGN KEY (user_id) REFERENCES users (id)
+                FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
             );
         `);
     await pool.query(`
         CREATE TABLE user_post_votes (
             user_id INT unsigned NOT NULL ,
-            FOREIGN KEY (user_id) REFERENCES users(id),
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
             post_id INT UNSIGNED NOT NULL,
-            FOREIGN KEY (post_id) REFERENCES posts(id),
+            FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
             is_vote_positive BOOLEAN);
             `);
 

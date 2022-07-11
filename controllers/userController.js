@@ -92,7 +92,7 @@ const loginUser = async (request, response, next) => {
 
     response
       .status(200)
-      .send({ status: "ok", message: `Correct login, token: ${token}, token: token` });
+      .send({ status: "ok", message: `Correct login, token: ${token}`, token: token });
   } catch (error) {
     next(error);
   }

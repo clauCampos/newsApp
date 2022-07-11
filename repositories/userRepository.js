@@ -2,24 +2,10 @@ import { getPool } from "../database/getPool.js";
 
 const pool = getPool();
 
-const insertUser = async ({
-  nick,
-  email,
-  encryptedPassword,
-  bio,
-  avatar,
-  registrationCode,
-}) => {
+const insertUser = async ({ nick, email, encryptedPassword, bio, avatar, registrationCode }) => {
   const [{ insertId }] = await pool.query(
     "INSERT INTO users (nick_name, email, password, bio, avatar, registration_code) VALUES (?,?,?,?,?,?)",
-    [
-      nick,
-      email,
-      encryptedPassword,
-      bio,
-      avatar || "default-user-avatar.jpg",
-      registrationCode,
-    ]
+    [nick, email, encryptedPassword, bio, avatar || "default-user-avatar.jpg", registrationCode]
   );
 
   return insertId;
@@ -40,10 +26,24 @@ const findUserByNickName = async (nick) => {
 };
 
 const findUserById = async (id) => {
-  const [user] = await pool.query(
-    `SELECT id, nick_name, email, bio, avatar FROM users WHERE id = "${id}"`
-  );
+
+  const [[user]] = await pool.query(`SELECT id, nick_name, email, bio, avatar FROM users WHERE id = "${id}"`);
   return user;
+}; 
+
+
+const insertUserRegistrationCode = async ({
+  nick_name,
+  email,
+  encryptedPassword,
+  registrationCode,
+}) => {
+  const [{ insertId }] = await pool.query(
+    "INSERT INTO users (nick_name, email, password, registration_code) VALUES (?,?,?,?)",
+    [nick_name, email, encryptedPassword, registrationCode]
+
+  );
+  return insertId;
 };
 
 const selectUserByActivationCode = async (registrationCode) => {

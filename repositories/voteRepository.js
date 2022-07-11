@@ -30,8 +30,21 @@ const deleteSingleVote= async(userId, idPost)=>{
 }
 
 const getVotesByPost = async(idPost)=>{
-    const count=await pool.query(
-        ``
+    //  const[posts]= await pool.query(`
+    const count=await pool.query(`
+      
+    SELECT posts.id, title, opening_line, text, topic, photo, actual_date AS creation_date, nick_name AS author,
+    SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
+    - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
+FROM
+    user_post_votes RIGHT JOIN posts 
+    ON user_post_votes.post_id = posts.id
+	RIGHT JOIN 
+    users ON posts.user_id = users.id
+    WHERE =idPost
+  GROUP BY post_id
+  ORDER BY total_votes desc, creation_date desc;`
+  
     )
     console.log(count)
     return count

@@ -4,8 +4,9 @@ import { validateAuthorization } from "../middlewares/validateAuthorization.js";
 
 export const userRouter = express.Router();
 
+userRouter.get("/get/myprofile", validateAuthorization, getProfile);
+userRouter.post("/signup", registerUser);
 userRouter.post("/login", loginUser);
-userRouter.post("/registration", registerUser);
 userRouter.get("/activate/:registrationCode", activateUser);
 userRouter.delete("/:userID", validateAuthorization, deleteUser);
-userRouter.get("/profile", validateAuthorization, getProfile);
+

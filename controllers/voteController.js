@@ -95,7 +95,7 @@ const getTotalVotesByPost = async (request, response, next) => {
 
         const count = await getVotesByPost(idPost)
 
-        response.status(200).send({status: "ok", message: `votes count is wip`});
+        response.status(200).send({status: "ok", message: `votes count is : ${count}`});
     } catch (error) {
         next(error)
     }

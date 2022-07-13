@@ -10,7 +10,7 @@ import {
   editPost,
   getPostById,
 } from "../controllers/postController.js";
-import {addVote, deleteVote, editVote, getTotalVotesByPost} from "../controllers/voteController.js";
+import {addVote, checkDuplicateVote, deleteVote, editVote, getTotalVotesByPost} from "../controllers/voteController.js";
 import { validateAuthorization } from "../middlewares/validateAuthorization.js";
 
 export const postRouter = express.Router();
@@ -30,3 +30,4 @@ postRouter.post("/vote/:idPost", validateAuthorization, addVote);
 postRouter.patch("/vote/:idPost", validateAuthorization, editVote);
 postRouter.delete("/vote/:idPost", validateAuthorization, deleteVote);
 postRouter.get("/vote/:idPost", getTotalVotesByPost);
+postRouter.get("/checkVote/:idPost", validateAuthorization, checkDuplicateVote);

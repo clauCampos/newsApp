@@ -29,8 +29,9 @@ const addVote = async (request, response, next) => {
             const booleanValueInput = request.body.is_vote_positive;
             const valueToInsert = booleanToIntValue(booleanValueInput);
             await insertVote(userId, idPost, valueToInsert);
+            const currentVotes = await getVotesByPost(idPost)
             response.status(200)
-                .send({status: "ok", message: `vote created for id post= ${idPost}`});
+                .send({status: "ok", message: `vote created for id post= ${idPost}`, data: {updatedVote: currentVotes}});
         }
 
     } catch (error) {
@@ -69,6 +70,24 @@ const editVote = async (request, response, next) => {
         next(error)
     }
 }
+const checkDuplicateVote = async (request, response, next) => {
+    try {
+        const userId = request.auth.id;
+        const {idPost} = request.params;
+        await idPostSchema.validateAsync(idPost);
+        const foundVote = await checkIfVoteExists(userId, idPost);
+
+        if(foundVote) {
+            response.status(200)
+                .send({status: "ok", data: {didUserVote: true }});
+        } else {
+            response.status(200)
+                .send({status: "ok", data: {didUserVote: false}});
+        }
+    } catch (error) {
+        next(error);
+    }
+    }
 
 const deleteVote = async (request, response, next) => {
     try {
@@ -100,4 +119,4 @@ const getTotalVotesByPost = async (request, response, next) => {
         next(error)
     }
 }
-export {addVote, deleteVote, getTotalVotesByPost, editVote}
+export {addVote, deleteVote, getTotalVotesByPost, editVote, checkDuplicateVote}

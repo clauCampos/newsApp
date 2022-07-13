@@ -36,7 +36,7 @@ FROM
 	RIGHT JOIN 
     users ON posts.user_id = users.id
     WHERE actual_date > NOW() - INTERVAL 24 HOUR
-  GROUP BY post_id
+  GROUP BY posts.id
   ORDER BY total_votes desc, creation_date desc;`
   )
 
@@ -46,29 +46,49 @@ FROM
 const collectPostsByUserId = async(userId)=>{
   const [posts]= await pool.query(
     `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id,
-    users.nick_name AS author
-    FROM posts LEFT JOIN users ON posts.user_id = users.id WHERE users.id= ? ORDER BY creation_date DESC`, [userId]);
+    users.nick_name AS author,
+        SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
+    - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
+FROM
+    user_post_votes RIGHT JOIN posts 
+    ON user_post_votes.post_id = posts.id
+    LEFT JOIN users ON posts.user_id = users.id WHERE users.id= ? GROUP BY posts.id ORDER BY creation_date DESC`, [userId]);
   return posts;
 }
 const findPostByTopic = async (topic) => {
   const [posts] = await pool.query(
       `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id,
-      users.nick_name AS author
-      FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE topic= ?`, [topic]);
+      users.nick_name AS author,
+       SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
+    - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
+    FROM user_post_votes RIGHT JOIN posts 
+    ON user_post_votes.post_id = posts.id
+     RIGHT JOIN users ON posts.user_id = users.id WHERE topic= ?
+     GROUP BY posts.id`, [topic]);
   return posts;
 };
 
 const findPostByDate = async (date) => {
   const [posts] = await pool.query(
       `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id,
-      users.nick_name AS author
-      FROM posts RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date LIKE "${date}%"`);
+      users.nick_name AS author,
+       SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
+    - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
+    FROM user_post_votes RIGHT JOIN posts 
+    ON user_post_votes.post_id = posts.id
+     RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date LIKE "${date}%"
+     GROUP BY posts.id`);
   return posts;
 };
 
 const findPostById = async (postId) => {
   const [[post]] = await pool.query(
-      `SELECT * FROM posts WHERE id= ?`, [postId]);
+      `SELECT * , 
+      SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
+    - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
+    FROM user_post_votes RIGHT JOIN posts 
+    ON user_post_votes.post_id = posts.id WHERE posts.id= ?
+      GROUP BY posts.id`, [postId]);
   return post;
 };
 

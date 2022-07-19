@@ -1,15 +1,14 @@
 import {fileURLToPath} from 'url';
 import path from "path";
 import {mkdir} from "node:fs/promises";
-
 const __dirname = fileURLToPath(import.meta.url);
 
-const photoPostPath = path.join(
+export const photoPostPath = path.join(
     __dirname,
     "..", "..", "images",
     "upload-photos-posts");
 
-const photoUserPath = path.join(
+export const photoUserPath = path.join(
     __dirname,
     "..", "..", "images",
     "upload-avatar-users")

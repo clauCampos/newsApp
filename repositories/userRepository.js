@@ -5,7 +5,7 @@ const pool = getPool();
 const insertUser = async ({ nick, email, encryptedPassword, bio, avatar, registrationCode }) => {
   const [{ insertId }] = await pool.query(
     "INSERT INTO users (nick_name, email, password, bio, avatar, registration_code) VALUES (?,?,?,?,?,?)",
-    [nick, email, encryptedPassword, bio, avatar || "default-user-avatar.jpg", registrationCode]
+    [nick, email, encryptedPassword, bio, avatar || "default-avatar.jpg", registrationCode]
   );
 
   return insertId;

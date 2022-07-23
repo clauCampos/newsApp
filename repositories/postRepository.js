@@ -27,7 +27,7 @@ const collectLatestPosts = async () => {
 };
 const collectLatestPostsSortedByVotes = async()=>{
   const[posts]= await pool.query(`
-    SELECT posts.id, title, opening_line, text, topic, photo, actual_date AS creation_date, nick_name AS author, posts.user_id,
+    SELECT posts.id, title, opening_line, text, topic, photo, actual_date AS creation_date, nick_name AS author, posts.user_id, avatar,
     SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
     - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
 FROM
@@ -45,7 +45,7 @@ FROM
 
 const collectPostsByUserId = async(userId)=>{
   const [posts]= await pool.query(
-    `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id,
+    `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id, avatar,
     users.nick_name AS author,
         SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
     - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
@@ -57,7 +57,7 @@ FROM
 }
 const findPostByTopic = async (topic) => {
   const [posts] = await pool.query(
-      `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id,
+      `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id, avatar,
       users.nick_name AS author,
        SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
     - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes
@@ -70,7 +70,7 @@ const findPostByTopic = async (topic) => {
 
 const findPostByDate = async (date) => {
   const [posts] = await pool.query(
-      `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id,
+      `SELECT posts.id, posts.title, posts.opening_line, posts.text, posts.topic, posts.photo, posts.actual_date AS creation_date, posts.user_id, avatar,
       users.nick_name AS author,
        SUM(CASE WHEN is_vote_positive > 0 THEN 1 ELSE 0 END) 
     - SUM(CASE WHEN is_vote_positive = 0 THEN 1 ELSE 0 END) AS total_votes

@@ -14,9 +14,16 @@ const checkIfVoteExists = async (userId, idPost)=>{
     const [[foundRows]] =await pool.query(
         `SELECT * FROM user_post_votes
          WHERE post_id= ${idPost} && user_id=${userId}`)
-    return foundRows;
+        return foundRows;
 }
-
+const getValueVote = async (userId, idPost)=>{
+  
+    const [[foundRows]] =await pool.query(
+        `SELECT * FROM user_post_votes
+         WHERE post_id= ${idPost} && user_id=${userId}`)
+        const {is_vote_positive} = foundRows
+        return is_vote_positive;
+}
 const updateVote = async(userId, idPost,booleanValueInput)=>{
     const [{affectedRows}]= await pool.query(
         `UPDATE user_post_votes SET is_vote_positive = ? 
@@ -49,4 +56,4 @@ FROM
     return totalVotes
 }
 
-export {insertVote, checkIfVoteExists, updateVote, deleteSingleVote, getVotesByPost}
+export {insertVote, checkIfVoteExists, updateVote, deleteSingleVote, getVotesByPost, getValueVote}

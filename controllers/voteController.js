@@ -1,5 +1,5 @@
 import {
-    checkIfVoteExists, insertVote, updateVote, deleteSingleVote, getVotesByPost} from "../repositories/voteRepository.js";
+    checkIfVoteExists, insertVote, updateVote, deleteSingleVote, getVotesByPost, getValueVote} from "../repositories/voteRepository.js";
 import {findPostById} from "../repositories/postRepository.js";
 import {booleanToIntValue} from "../helpers/convertBooleanToInteger.js";
 import {idPostSchema} from "../schemas-validation/postSchema.js";
@@ -31,7 +31,7 @@ const addVote = async (request, response, next) => {
             await insertVote(userId, idPost, valueToInsert);
             const currentVotes = await getVotesByPost(idPost)
             response.status(200)
-                .send({status: "ok", message: `vote created for id post= ${idPost}`, data: {updatedVote: currentVotes}});
+                .send({status: "ok", message: `vote created for id post= ${idPost}`, updatedVotes: currentVotes});
         }
 
     } catch (error) {
@@ -58,8 +58,9 @@ const editVote = async (request, response, next) => {
             const booleanValueInput = request.body.is_vote_positive;
             const valueToInsert = booleanToIntValue(booleanValueInput);
             await updateVote(userId, idPost, valueToInsert);
+            const currentVotes = await getVotesByPost(idPost)
             response.status(200)
-                .send({status: "ok", message: `vote updated for id post= ${idPost}`});
+                .send({status: "ok", message: `vote updated for id post= ${idPost}`, updatedVotes: currentVotes});
 
         } else {
             throw generateError(`You haven't vote to id post= ${idPost} yet.`, 400);
@@ -78,11 +79,12 @@ const checkDuplicateVote = async (request, response, next) => {
         const foundVote = await checkIfVoteExists(userId, idPost);
 
         if(foundVote) {
+            const valueVote = await getValueVote(userId, idPost)
             response.status(200)
-                .send({status: "ok", data: {didUserVote: true }});
+                .send({status: "ok", data: {didUserVote: true, currentVote: valueVote }});
         } else {
             response.status(200)
-                .send({status: "ok", data: {didUserVote: false}});
+                .send ({status: "ok", data: {didUserVote: false, currentVote: null}});
         }
     } catch (error) {
         next(error);
@@ -100,7 +102,8 @@ const deleteVote = async (request, response, next) => {
             throw generateError(`can't delete this vote because is not yours or doesn't exist`, 405);
         }
         await deleteSingleVote(userId, idPost)
-        response.status(200).send({status: "ok", message: `vote deleted`});
+        const currentVotes = await getVotesByPost(idPost)
+        response.status(200).send({status: "ok", message: `vote deleted`, updatedVotes: currentVotes});
 
     } catch (error) {
         next(error);

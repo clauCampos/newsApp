@@ -52,8 +52,13 @@ FROM
   ORDER BY total_votes desc, creation_date desc`, [idPost]
   
     )
-    const totalVotes= infoPost.total_votes
-    return totalVotes
+    if(!infoPost){
+        return 0;
+    }
+    if(infoPost){
+        const totalVotes = infoPost.total_votes;
+        return totalVotes;
+    } 
 }
 
 export {insertVote, checkIfVoteExists, updateVote, deleteSingleVote, getVotesByPost, getValueVote}

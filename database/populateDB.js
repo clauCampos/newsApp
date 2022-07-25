@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 const populateDB = async () => {
     try {
         const pool = getPool();
-        const encryptedPassword= await bcrypt.hash("maria123", 10)
+        const encryptedPassword= await bcrypt.hash("Maria123", 10)
 
         await pool.query(`INSERT INTO USERS(nick_name, email, password, bio) VALUES 
                         ("mariat", "maria@gmail.com", ?, null )`, [encryptedPassword])

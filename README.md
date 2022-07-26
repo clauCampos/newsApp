@@ -37,7 +37,7 @@ _In the DOCS folder you have a json ready to use in Postman with all the configu
 >
 > {
 > "email": "maria@gmail.com",
-> "password": "maria123"
+> "password": "Maria123"
 > }
 > ```
 

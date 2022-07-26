@@ -64,7 +64,7 @@ const findPostByTopic = async (topic) => {
     FROM user_post_votes RIGHT JOIN posts 
     ON user_post_votes.post_id = posts.id
      RIGHT JOIN users ON posts.user_id = users.id WHERE topic= ?
-     GROUP BY posts.id`, [topic]);
+     GROUP BY posts.id ORDER BY total_votes DESC, creation_date DESC`, [topic]);
   return posts;
 };
 
@@ -77,7 +77,7 @@ const findPostByDate = async (date) => {
     FROM user_post_votes RIGHT JOIN posts 
     ON user_post_votes.post_id = posts.id
      RIGHT JOIN users ON posts.user_id = users.id WHERE actual_date LIKE "${date}%"
-     GROUP BY posts.id`);
+     GROUP BY posts.id ORDER BY total_votes desc, creation_date desc`);
   return posts;
 };
 

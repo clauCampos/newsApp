@@ -23,12 +23,15 @@ const registerUser = async (request, response, next) => {
 
     const emailResult = await findUserByEmail(email);
     const nickNameResult = await findUserByNickName(nick);
+  
     let avatar = null;
 
-    if (emailResult.length !== 0) {
-      throw generateError(`Already exists a user with that email.`, 404);
-    } else if (nickNameResult.length !== 0) {
-      throw generateError(`Already exists a user with that nick name.`, 404);
+    if (emailResult) {
+      throw generateError(`Already exists an user with that email.`, 404);
+
+    } else if (nickNameResult) {
+      throw generateError(`Already exists an user with that nick name.`, 404);
+    
     } else if (request.files?.avatar) {
       await photoSchema.validateAsync(request.files.avatar.name);
       const image = await processImage(request.files?.avatar.data);
@@ -48,14 +51,14 @@ const registerUser = async (request, response, next) => {
       registrationCode,
     });
 
-    const { SERVER_HOST, SERVER_PORT } = process.env;
+    const { SERVER_PORT, DATABASE_HOST } = process.env;
 
     await sendMail(
       "¡Welcome to COLLECTIVE NEWS PROJECT!",
       `
           <p>Activate your account here:</p>
           
-          <a href="http://${SERVER_HOST}:${SERVER_PORT}/api/v1/user/activate/${registrationCode}">Activate</a>
+          <a href="http://${DATABASE_HOST}:${SERVER_PORT}/api/v1/user/activate/${registrationCode}">Activate</a>
           `,
       email
     );
@@ -71,12 +74,15 @@ const loginUser = async (request, response, next) => {
     const { email, password } = request.body;
 
     const user = await findUserByEmail(email);
-
-    if (user.length === 0) {
+  
+    if (!user) {
       throw generateError(`Wrong email or password.`, 400);
+    }else if(user.registration_code){
+      throw generateError(`Must activate your account.`, 400);
     }
+  
 
-    const encryptedPassword = user[0]?.password;
+    const encryptedPassword = user.password;
     const isLoginValid = await bcrypt.compare(password, encryptedPassword);
 
     if (!isLoginValid) {
@@ -84,7 +90,7 @@ const loginUser = async (request, response, next) => {
     }
 
     const tokenPayload = {
-      id: user[0].id,
+      id: user.id,
     };
     const token = jsonwebtoken.sign(tokenPayload, process.env.JWT_SECRET, {
       expiresIn: "7d",
